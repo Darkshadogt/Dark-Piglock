@@ -1,0 +1,70 @@
+<form id="signupForm" class="box transparent" method="post" action="{% url 'signup' %}" onsubmit="event.preventDefault(); sign_up();">
+    {% csrf_token %}
+    <div class="field">
+        <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Create An Account</p>
+    </div>
+    <!--Display errors, if found-->
+    {% if form.errors %}
+        <div class="notification">
+            <button class="delete" aria-label="delete" onclick="this.parentElement.style.display='none'"></button>
+            <strong class="is-family-monospace">Error:</strong>
+            <ul class="is-family-monospace">
+                {% for error_list in form.errors.values %}
+                    {% for error in error_list %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <!--Form fields-->
+    <div class="field" style="margin-top: 30px;">
+        <label class="label is-family-monospace has-text-white">
+            Username
+        </label>
+        <div class="control">
+            {{ form.username }}
+        </div>
+    </div>
+    <div class="field" style="margin-top: 20px;">
+        <label class="label is-family-monospace has-text-white">
+            Email
+        </label>
+        <div class="control">
+            {{ form.email }}
+        </div>
+    </div>
+    <div class="field" style="margin-top: 20px;">
+        <label class="label is-family-monospace has-text-white">
+            Password
+        </label>
+        <div class="control">
+            {{ form.password1 }}
+            <button class="button" onclick="toggle_password()" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -67.5px; margin-left: 80px;" type="button">
+                <span class="icon" id="passwordIcon" style="font-size: 15px;">
+                    <box-icon name='hide' color='#ffffff' ></box-icon>
+                </span>
+            </button>
+        </div>
+    </div>
+    <div class="field" style="margin-top: -20px;">
+        <label class="label is-family-monospace has-text-white">
+            Confirm Password
+        </label>
+        <div class="control">
+            {{ form.password2 }}
+            <button class="button" onclick="toggle_confirm_password()" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -67.5px; margin-left: 155px;" type="button">
+                <span class="icon" id="confirm_passwordIcon" style="font-size: 15px;">
+                    <box-icon name='hide' color='#ffffff' ></box-icon>
+                </span>
+            </button>
+        </div>
+    </div>
+    <div class="field mt-5" style="text-align:center">
+        <div class="control">
+            <button class="button is-family-monospace has-text-weight-bold" type="submit">
+                Sign Up
+            </button>
+        </div>
+    </div>
+</form>

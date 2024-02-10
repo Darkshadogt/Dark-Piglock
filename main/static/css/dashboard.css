@@ -1,0 +1,116 @@
+/* The body */
+body::-webkit-scrollbar,
+.main_content::-webkit-scrollbar {
+    width: 0px;
+}
+
+/* Side Menu */
+.side_menu {
+    background-color: black;
+    height:100%;
+    position: fixed;
+    width:250px;
+}
+
+/* Menu list */
+.menulist li + li {
+    margin-top: 5px;
+}
+
+/* Menu list */
+.menu-list a:hover {
+    background-color: transparent;
+}
+
+/* Content right of the side menu */
+.main_content {
+    overflow-y: auto;
+    height: 100vh;
+    background-color: #1a1817;
+    margin-left: 250px;
+}
+
+/* Columns */
+.column {
+    margin-top: 100px;
+    margin-left:42.5px;
+    height: 100px;
+    border-radius: 10px;
+    background-color: black;
+    display: flex;
+}
+
+/* Content right of the side menu */
+.main_content::-webkit-scrollbar-thumb,
+.maincontent::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* Navigation bar */
+.custom_navbar {
+    background-color: transparent;
+    width:calc(100% - 250px);
+    margin-left: 250px;
+}
+
+/* Navigation bar */
+.custom_dropdown {
+    background-color: black;
+}
+
+/* Navigation bar */
+.navbar-link:hover {
+    background-color: transparent !important;
+    color:white !important;
+}
+
+/* Navigation bar */
+.navbar-item.is-active .navbar-link {
+    background-color: transparent !important;
+}
+
+/* Navigation bar */
+.navbar-link:after {
+    border-color: white !important;
+}
+
+/* Navigation bar */
+.navbar-link,
+.navbar-item {
+    color:white;
+}
+
+/* The line graph */
+.section_line_graph {
+    margin-left: 32.5px;
+    margin-top: 50px;
+    border-radius: 10px;
+    width: 550px;
+    height: 360px;
+}
+
+/* The bar graph */
+.section_bar_graph {
+    margin-left: 607.5px;
+    margin-top: -360px;
+    border-radius: 10px;
+    height: 360px;
+    width: 400px;
+}
+
+/* The form for adding a password */
+.modal-content {
+    height: 100%;
+    width: 100%;
+}
+
+/* Hides the scrollbar in the add password form */
+.modal-content::-webkit-scrollbar {
+    width: 0px; 
+}
+
+/* Hides the scrollbar in the add password form */
+.modal-content::-webkit-scrollbar-thumb,
+.modal-content::-webkit-scrollbar-track {
+    background-color: transparent; 
+}

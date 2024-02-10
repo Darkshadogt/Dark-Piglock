@@ -1,0 +1,9 @@
+<div class="notification" style="width: 900px; margin-left: 15px; margin-top: 20px;">
+    <button class="delete" type="button" onclick="this.parentElement.style.display='none'"></button>
+    <strong style="color: black; font-size: 18px;">Error:</strong>
+    <ul class="has-text-weight-light" style="color: black; font-size: 15px;">
+        {% for error in error_list %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+</div>

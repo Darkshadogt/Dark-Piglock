@@ -1,0 +1,37 @@
+{% if user_cards %}
+    <nav class="pagination is-centered">
+        {% if user_cards.has_previous %}
+            <a href="?page={{ user_cards.previous_page_number }}" onclick="event.preventDefault(); page_update(this);"  class="pagination-previous">
+                <box-icon name='chevron-left' color='#ffffff' ></box-icon>
+            </a>
+        {% else %}
+            <a class="pagination-previous is-disabled">
+                <box-icon name='chevron-left' color='#ffffff' ></box-icon>
+            </a>
+        {% endif %}
+    
+        <ul class="pagination-list" >
+            {% for i in user_cards.paginator.page_range %}
+                {% if user_cards.number == i %}
+                    <li>
+                        <span class="pagination-link is-current has-text-white">{{ i }}</span>
+                    </li>
+                {% elif i > user_cards.number|add:"-3" and i < user_cards.number|add:"3" %}
+                    <li>
+                        <a href="?page={{ i }}" onclick="event.preventDefault(); page_update(this);"  class="pagination-link has-text-white">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    
+        {% if user_cards.has_next %}
+            <a href="?page={{ user_cards.next_page_number }}" onclick="event.preventDefault(); page_update(this);"  class="pagination-next">
+                <box-icon name='chevron-right' color='#ffffff' ></box-icon>
+            </a>
+        {% else %}
+            <a class="pagination-next is-disabled">
+                <box-icon name='chevron-right' color='#ffffff' ></box-icon>
+            </a>
+        {% endif %}
+    </nav>
+{% endif %}

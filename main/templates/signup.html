@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load django_simple_bulma %}
+    {% bulma %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title=>Dark Piglock</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <!--Loads the css file containing the styling for the sign up page-->
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+    <style>
+        /* Setting background image */
+        body {
+            background: url('{% static "dark_background.jpeg" %}') no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
+<!--Navigation bar-->
+<nav class="navbar is-fixed-top is-spaced transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item">
+            <div class="is-flex is-flex-direction-row is-align-items-center mt-2 ml-2">
+                <img class="mt-2 ml-2" src="{% static 'pig_icon.png' %}" width="40" height="100"><!--Icon link: https://icons8.com/icon/qudcNstH1hBC/pig-->
+                <span class="logo-name has-text-weight-bold is-family-monospace has-text-white ml-2 mt-2">Dark Piglock</span>
+            </div>
+        </a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <a class="navbar-item">
+                <a class="button is-family-monospace is-ghost is-light is-inverted has-text-weight-bold" href="/login/">
+                    Log In
+                </a>
+            </a>
+            <a class="navbar-item">
+                <a class="button is-family-monospace is-ghost is-inverted is-light has-text-weight-bold" href="/signup/">
+                    Sign Up
+                </a>
+            </a>
+        </div>
+    </div>      
+</nav>
+<body>
+    <!--Loads Boxicon and JQuery Package-->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <section class="section is-centered is-medium">
+        <div class="columns is-centered">
+            <div class="column is-two-fifths">
+                <div id="signupForm_container">
+                    <form id="signupForm" class="box transparent" method="post" action="{% url 'signup' %}" onsubmit="event.preventDefault(); sign_up();">
+                        {% csrf_token %}
+                        <div class="field">
+                            <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Create An Account</p>
+                        </div>
+                        <!--Display errors, if found-->
+                        {% if form.errors %}
+                            <div class="notification">
+                                <button class="delete" aria-label="delete" onclick="this.parentElement.style.display='none'"></button>
+                                <strong class="is-family-monospace">Error:</strong>
+                                <ul class="is-family-monospace">
+                                    {% for error_list in form.errors.values %}
+                                        {% for error in error_list %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <!--Form fields-->
+                        <div class="field" style="margin-top: 30px;">
+                            <label class="label is-family-monospace has-text-white">
+                                Username
+                            </label>
+                            <div class="control">
+                                {{ form.username }}
+                            </div>
+                        </div>
+                        <div class="field" style="margin-top: 20px;">
+                            <label class="label is-family-monospace has-text-white">
+                                Email
+                            </label>
+                            <div class="control">
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <div class="field" style="margin-top: 20px;">
+                            <label class="label is-family-monospace has-text-white">
+                                Password
+                            </label>
+                            <div class="control">
+                                {{ form.password1 }}
+                                <button class="button" onclick="toggle_password()" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -67.5px; margin-left: 80px;" type="button">
+                                    <span class="icon" id="passwordIcon" style="font-size: 15px;">
+                                        <box-icon name='hide' color='#ffffff' ></box-icon>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="field" style="margin-top: -20px;">
+                            <label class="label is-family-monospace has-text-white">
+                                Confirm Password
+                            </label>
+                            <div class="control">
+                                {{ form.password2 }}
+                                <button class="button" onclick="toggle_confirm_password()" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -67.5px; margin-left: 155px;" type="button">
+                                    <span class="icon" id="confirm_passwordIcon" style="font-size: 15px;">
+                                        <box-icon name='hide' color='#ffffff' ></box-icon>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="field mt-5" style="text-align:center">
+                            <div class="control">
+                                <button class="button is-family-monospace has-text-weight-bold" type="submit">
+                                    Sign Up
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        /* Toggles the visibility of the first password field */
+        function toggle_password() {
+            var passwordInput = document.getElementById('passwordInput');
+            var passwordIcon = document.getElementById('passwordIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.innerHTML = '<box-icon name="show" color="#ffffff"></box-icon>';
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.innerHTML = '<box-icon name="hide" color="#ffffff"></box-icon>';
+            }
+        }
+
+        /* Toggles the visibility of the second password field */
+        function toggle_confirm_password() {
+            var confirm_passwordInput = document.getElementById('confirm_passwordInput');
+            var confirm_passwordIcon = document.getElementById('confirm_passwordIcon');
+
+            if (confirm_passwordInput.type === 'password') {
+                confirm_passwordInput.type = 'text';
+                confirm_passwordIcon.innerHTML = '<box-icon name="show" color="#ffffff"></box-icon>';
+            } else {
+                confirm_passwordInput.type = 'password';
+                confirm_passwordIcon.innerHTML = '<box-icon name="hide" color="#ffffff"></box-icon>';
+            }
+        }
+        
+        /* Submits the sign up form */
+        function sign_up() {
+            var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            $.ajax({
+                type: "POST",
+                url: "{% url 'signup' %}",
+                data: $('#signupForm').serialize() + '&csrfmiddlewaretoken=' + csrftoken,
+                success: function(response) {
+                    if (response.status == 'success') {
+                        window.location.href = "{% url 'login' %}";
+                    } else {
+                        $('#signupForm_container').html($(response.sign_up_form_html));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+<!--Credits-->
+<!--<a href="https://www.freepik.com/free-vector/background-luxury-minimalist-gradient-style-design_32582886.htm#page=2&query=dark%20vector%20background&position=30&from_view=search&track=ais&uuid=0b077dd1-421b-47da-a2d2-b748ddbd193a">Image by arrandera</a> on Freepik-->
+<!--Image by <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852122.htm#query=dark%20theme%20vector%20background&position=8&from_view=search&track=ais&uuid=5fa2d0fc-99ae-437f-a630-cc21610266c7">Freepik</a>-->
+<!--<div> Icons made by <a href="https://www.freepik.com" title="Freepik"> Freepik </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com'</a></div>-->
+<!--<a href="https://www.freepik.com/icon/animal-rights_2865584#fromView=search&term=pig+lock&track=ais&page=1&position=31&uuid=3f7dfbf6-5dbb-4b17-812a-f2923c1652ca">Icon by Freepik</a>-->
+<!--<a href="https://www.freepik.com/icon/book_6153987#fromView=search&term=pig+with+notebook&track=ais&page=1&position=17&uuid=06c214f7-3f84-4666-9a1f-06e42c4b8deb">Icon by Flowicon</a>-->
+<!--<a href="https://www.freepik.com/icon/no-pork_9958719">Icon by Freepik</a>-->
+<!--Image by <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852128.htm#query=dark%20theme%20vector&position=12&from_view=search&track=ais&uuid=5c4ba701-a1f6-4f83-bbda-6470cbea0ae8">Freepik</a>-->
+<!--<a href="https://storyset.com/online">Online illustrations by Storyset</a>-->

@@ -1,0 +1,50 @@
+{% load widget_tweaks %}
+<form method="post" action="{% url 'notes' %}" onsubmit="event.preventDefault(); edit_note(this);">
+    {% csrf_token %}
+    <input type="hidden" value="editNoteForm" name="form_type">
+    <input type="hidden" value="{{ note.id }}" name="note_id">
+    <div class="field" style="margin-top: 30px;">
+        <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Edit Note</p>
+    </div>
+    {% if editForm.errors %}
+        <div class="notification" style="width: 400px; margin-left: 50px; margin-top: 20px;" id="edit_note_modal_notification_{{ note.id }}">
+            <button class="delete" type="button" onclick="closeNotification('{{ note.id }}')"></button>
+            <strong style="color: black; font-size: 18px;">Error:</strong>
+            <ul class="has-text-weight-light" style="color: black; font-size: 15px;">
+                {% for error_list in editForm.errors.values %}
+                    {% for error in error_list %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div class="field">
+        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+            Title
+        </label>
+        <div class="control">
+            {% render_field editForm.title value=note.title %}
+        </div>
+    </div>
+    <div class="field">
+        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+            Description
+        </label>
+        <div class="control">
+            <textarea class="input is-family-monospace" type="text" style="width: 400px; margin-top: 10px; margin-left: 50px; height: 400px" name="editForm_content">{{ note.get_content }}</textarea>
+        </div>
+    </div>
+    <div class="field is-grouped-centered is-grouped">
+        <div class="control">
+            <button class="button is-family-monospace" type="reset" onclick="closeModal('edit_note_modal_{{ note.id }}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+            Cancel
+            </button>
+        </div>
+        <div class="control">
+            <button class="button is-family-monospace" type="submit" onclick="closeModal('edit_note_modal_{{ note.id }}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                Save
+            </button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,89 @@
+{% load widget_tweaks %}
+<form method="post" action="{% url 'cards' %}" onsubmit="event.preventDefault(); edit_card(this);">
+    {% csrf_token %}
+    <input type="hidden" value="editCardForm" name="form_type">
+    <input type="hidden" value="{{ card.id }}" name="card_id">
+    <div class="field" style="margin-top: 30px;">
+        <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Edit Card</p>
+    </div>
+    <!--If there are errors, display them-->
+    {% if editForm.errors %}
+        <div class="notification" style="width: 400px; margin-left: 50px; margin-top: 20px;" id="edit_card_modal_notification_{{ card.id }}">
+            <button class="delete" type="button" onclick="closeNotification('edit_card_modal_notification_{{ card.id }}')"></button>
+            <strong style="color: black; font-size: 18px;">Error:</strong>
+            <ul class="has-text-weight-light" style="color: black; font-size: 15px;">
+                {% for error_list in editForm.errors.values %}
+                    {% for error in error_list %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <!--Fields of the form-->
+    <div class="field">
+        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+            Card Brand
+        </label>
+        <div class="control">
+            {% render_field editForm.card_brand value=card.card_brand %}
+        </div>
+    </div>
+    <div class="field">
+        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+            Type of Card
+        </label>
+        <div class="control">
+            {% render_field editForm.card_type value=card.card_type %}
+        </div>
+    </div>
+    <div class="field">
+        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+            Cardholder Name
+        </label>
+        <div class="control">
+            {% render_field editForm.cardholder_name value=card.get_cardholder_name %}
+        </div>
+    </div>
+    <div class="field">
+        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+            Card Number
+        </label>
+        <div class="control">
+            {% render_field editForm.card_number value=card.get_card_number %}
+        </div>
+    </div>
+    <div class="field">
+        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+            Security Code
+        </label>
+        <div class="control">
+            <input class="input is-family-monospace" style="width: 400px; margin-top: 10px; margin-left: 50px" value="{{ card.get_cvv }}" name="editForm_cvv" type="password" id="edit_card_modal_{{ card.id }}_password">
+            <button class="button" type="button" onclick="edit_toggle_password('{{ card.id }}')" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -72.5px; margin-left: 175px;">
+                <span class="icon" id="{{card.id}}_icon" style="font-size: 15px;">
+                    <box-icon name='hide' color='#ffffff' ></box-icon>
+                </span>
+            </button>
+        </div>
+    </div>
+    <div class="field">
+        <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+            Expiration Date
+        </label>
+        <div class="control">
+            {% render_field editForm.expiration_date value=card.get_expiration_date %}
+        </div>
+    </div>
+    <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+        <div class="control">
+            <button class="button is-family-monospace" type="reset" onclick="closeModal('edit_card_modal_{{card.id}}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+            Cancel
+            </button>
+        </div>
+        <div class="control">
+            <button class="button is-family-monospace" type="submit" onclick="closeModal('edit_card_modal_{{card.id}}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                Add
+            </button>
+        </div>
+    </div>
+</form>

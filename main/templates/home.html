@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load django_simple_bulma %}
+    {% bulma %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Piglock</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <style>
+        body::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        html {
+            background: url('{% static "home_background.jpeg" %}') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .transparent {
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<!--Navigation bar-->
+<nav class="navbar is-fixed-top is-spaced transparent">
+    <div class="navbar-brand">
+        <a class="navbar-item">
+            <div class="is-flex is-flex-direction-row is-align-items-center mt-2 ml-2">
+                <img class="mt-2 ml-2" src="{% static 'pig_icon.png' %}" width="40" height="100">
+                <span class="logo-name has-text-weight-bold is-family-monospace has-text-white ml-2 mt-2">Dark Piglock</span>
+            </div>
+        </a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <a class="navbar-item">
+                <a class="button is-family-monospace is-ghost is-light is-inverted has-text-weight-bold" href="/login/">
+                    Log In
+                </a>
+            </a>
+            <a class="navbar-item">
+                <a class="button is-family-monospace is-ghost is-inverted is-light has-text-weight-bold" href="/signup/">
+                    Sign Up
+                </a>
+            </a>
+        </div>
+    </div>      
+</nav>
+<body>
+    <h1 style="font-family: monospace; color: white; font-size: 30px; text-align: center; margin-top: 180px;">Never need to remember your passwords again</h1>
+    <p style="font-family: monospace; color: white; text-align: center; font-weight: lighter;">With this simple click</p>
+    <div class="field mt-5" style="text-align:center; margin-top: 10px;">
+        <div class="control">
+            <a class="button is-family-monospace has-text-weight-bold is-rounded" style="width: 120px; margin-right: 10px;" href="/signup/">
+                Get Started
+            </a>
+            <a class="button is-family-monospace has-text-weight-bold is-rounded" style="width: 120px; margin-left: 10px;" href="/login/">
+                Already in?
+            </a>
+        </div>
+    </div>
+    <img src="{% static 'home_icon.png' %}" width="400" height="400" style="margin-left: 450px;">
+    <p style="font-family: monospace; color: white; text-align: center; font-weight: lighter; font-size: 12px; margin-top: 50px;">Dark Piglock offers a straightforward and user-friendly experience for managing your passwords.</p>
+    <p style="font-family: monospace; color: white; text-align: center; font-weight: lighter; font-size: 12px;">With Dark Piglock, you can store your passwords, notes, credit card information, and even generate new passwords with ease.</p>
+    <p style="font-family: monospace; color: white; text-align: center; font-weight: lighter; font-size: 12px;">This password manager is a personal project and may not offer the same level of security as other password managers.</p>
+    <p style="font-family: monospace; color: white; text-align: center; font-weight: lighter; font-size: 12px;">You can locate the images utilized on this website within the credits section of the dropdown menu upon logging in.</p>
+    <p style="font-family: monospace; color: white; text-align: center; font-weight: lighter; font-size: 12px;">Please use it with caution.</p>
+</body>
+</html>

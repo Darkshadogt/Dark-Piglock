@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load django_simple_bulma %}
+    {% load widget_tweaks %}
+    {% bulma %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Piglock</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <!--Loads the css file containing the styling for settings page-->
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+</head>
+<!--Hides the scrollbar-->
+<body style="overflow-x: hidden;">
+    <!--Loads Boxicon and JQuery and Bulma Slider Package-->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <div class="tile is-ancestor is-2">
+        <!--Side Menu-->
+        <aside class="menu mt-3 ml-3 side_menu">
+            <div class="is-flex is-flex-direction-row is-align-items-center mt-2 ml-2">
+                <img class="mt-2 ml-2" src="{% static 'pig_icon.png' %}" width="40" height="100">
+                <span class="logo-name has-text-weight-bold is-family-monospace has-text-white ml-2 mt-2">Dark Piglock</span>
+            </div>
+            <p class="menu-label has-text-white is-family-monospace mt-5 ml-2">General</p>
+            <ul class="menu-list menulist mt-5 ml-2">
+                <li>
+                    <a class="icon-text is-family-monospace has-text-white is-family-monospace is-flex is-align-items-center" href="/dashboard/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='dashboard' type='solid' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/passwords/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='lock' type='solid' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Passwords</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/notes/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='edit' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Notes</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/cards/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='credit-card' type='solid' color='#ffffff' ></box-icon>
+                            </span>
+                        <span class="mt-2">Credit Cards</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/history/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='history' color='#ffffff'></box-icon>
+                        </span>
+                        <span class="mt-2">History</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/password-generator/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='cog' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <p class="menu-label has-text-white is-family-monospace mt-5 ml-2">Tools</p>
+            <ul class="menu-list menulist mt-5 ml-2">
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/password-generator/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='refresh' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Password Generator</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        </div>
+    </div>
+    <div class="main_content">
+        <!--Navigation Bar-->
+        <nav class="navbar custom_navbar is-fixed-top">
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item has-dropdown" id="dropdown">
+                        <a class="navbar-link is-family-monospace">{{ username }}</a>
+                        <div class="navbar-dropdown custom_dropdown">
+                            <a class="navbar-item is-family-monospace" onclick="openModal('credits')">
+                                Credits
+                            </a>
+                            <a class="navbar-item is-family-monospace" href="{% url 'logout' %}">
+                                Log Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!--Attribution Modal-->
+        <div class="modal" id="credits" style="width: 400px; height: 450px; position: fixed; top: 55%; left: 55%; transform: translate(-50%, -50%); z-index: 5;">
+            <div class="modal-background"></div>
+            <div class="modal-content" style="background-color: black; text-align: center; margin-top: 30px;">
+                <h1 style="color: white; font-family: monospace; font-size: 20px; margin-bottom: 20px;">Credits</h1>
+                <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852122.htm#query=dark%20theme%20vector%20background&position=8&from_view=search&track=ais&uuid=5fa2d0fc-99ae-437f-a630-cc21610266c7" style="color: white; font-family: monospace; text-decoration: underline;">Login Page and Sign Up Page Background Image by Freepik</a>
+                <br>
+                <a href="https://www.freepik.com/free-vector/background-luxury-minimalist-gradient-style-design_32582886.htm#page=2&query=dark%20vector%20background&position=30&from_view=search&track=ais&uuid=0b077dd1-421b-47da-a2d2-b748ddbd193a" style="color: white; font-family: monospace; text-decoration: underline;">Credit Card Background Image by arrandera</a>
+                <br>
+                <div style="font-family: monospace; color: white;"> Credit Card Chip Icon made by <a href="https://www.freepik.com" style="color: white; font-family: monospace; text-decoration: underline;" title="Freepik"> Freepik </a> from <a href="https://www.flaticon.com/" title="Flaticon" style="color: white; font-family: monospace; text-decoration: underline;">www.flaticon.com'</a></div>
+                <a href="https://www.freepik.com/icon/animal-rights_2865584#fromView=search&term=pig+lock&track=ais&page=1&position=31&uuid=3f7dfbf6-5dbb-4b17-812a-f2923c1652ca" style="color: white; font-family: monospace; text-decoration: underline;">Password Page Icon by Freepik</a>
+                <br>
+                <a href="https://icons8.com/icon/qudcNstH1hBC/pig" style="color: white; font-family: monospace; text-decoration: underline;">Website Pig Icon made by Vitaly Gorbachev on</a><a href="https://icons8.com/"style="color: white; font-family: monospace; text-decoration: underline;"> Icons8</a>
+                <br>
+                <a href="https://www.freepik.com/icon/book_6153987#fromView=search&term=pig+with+notebook&track=ais&page=1&position=17&uuid=06c214f7-3f84-4666-9a1f-06e42c4b8deb" style="color: white; font-family: monospace; text-decoration: underline;">Note Page Icon by Flowicon</a>
+                <br>
+                <div style="color: white; font-family: monospace;">Home Page Background Image by <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852128.htm#query=dark%20theme%20vector&position=12&from_view=search&track=ais&uuid=5c4ba701-a1f6-4f83-bbda-6470cbea0ae8" style="color: white; font-family: monospace; text-decoration: underline;">Freepik</a></div>
+                <a href="https://storyset.com/online" style="color: white; font-family: monospace; text-decoration: underline;">Home Page Illustration by Storyset</a>
+                <br>
+                <a href="https://www.freepik.com/icon/no-pork_9958719" style="color: white;  font-family: monospace; text-decoration: underline;">History Page Icon by Freepik</a>
+                <div class="field is-grouped-centered is-grouped" style="margin-top: 10px;">
+                    <div class="control">
+                        <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('credits')">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <h1 class="title is-family-monospace" style="font-size: 20px; color: white; font-weight: lighter; margin-top: 30px; margin-left: 50px;">Account Settings</h1>
+            <div style="border-top: 2px solid white;"></div>
+            <div id="errorContainer"></div>
+            <form method="POST" action="{% url 'settings' %}" onsubmit="event.preventDefault(); changeInfo(this);" style="margin-top: 40px;">
+                {% csrf_token %}
+                <!--Fields of the form-->
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                            Username
+                        </label>
+                      </div>
+                    <div class="control">
+                        <input class="input is-family-monospace" placeholder="{{ username }}" name="username">
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                            Email
+                        </label>
+                      </div>
+                    <div class="control">
+                        <input class="input is-family-monospace" placeholder="{{ email }}" name="email">
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                            Current Password
+                        </label>
+                    </div>
+                    <div class="control">
+                        <input class="input is-family-monospace" type="password" id="current_user_password" placeholder="" name="old_password">
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                            New Password
+                        </label>
+                    </div>
+                    <div class="control">
+                        <input class="input is-family-monospace" type="password" id="user_password" placeholder="" name="new_password1">
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                            Confirm New Password
+                        </label>
+                    </div>
+                    <div class="control">
+                        <input class="input is-family-monospace" type="password" id="user_confirm_password" placeholder="" name="new_password2">
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="buttons">
+                    <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                        Delete All Passwords
+                    </label>
+                    <div class="control">
+                        <div class="button" style="width: 120px; margin-top: 15px; background-color: transparent; color: white; width: 80px; margin-left: 50px;" onclick="openModal('delete_passwords_confirm')">
+                            <box-icon name='x' color='#ffffff' ></box-icon>
+                        </div>
+                    </div>
+                    <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 120px;">
+                        Delete All Notes
+                    </label>
+                    <div class="control">
+                        <div class="button" style="width: 120px; margin-top: 15px; background-color: transparent; color: white; width: 80px; margin-left: 95px;" onclick="openModal('delete_notes_confirm')">
+                            <box-icon name='x' color='#ffffff' ></box-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                        Delete All Cards
+                    </label>
+                    <div class="control">
+                        <div class="button" style="width: 120px; margin-top: 15px; background-color: transparent; color: white; width: 80px; margin-left: 87.5px;" onclick="openModal('delete_cards_confirm')">
+                            <box-icon name='x' color='#ffffff' ></box-icon>
+                        </div>
+                    </div>
+                    <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 120px;">
+                        Delete All Deleted Items
+                    </label>
+                    <div class="control">
+                        <div class="button" style="width: 120px; margin-top: 15px; background-color: transparent; color: white; width: 80px; margin-left: 20px;" onclick="openModal('delete_trash_confirm')">
+                            <box-icon name='x' color='#ffffff' ></box-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                            Two Factor Authentication
+                        </label>
+                    </div>
+                    <div class="control">
+                        <input style="margin-top: 60px; margin-left: 540px;" class="toggle" type="checkbox" id="switch" checked onclick="changeAuth()"><label for="switch" class="toggle-label" style="margin-left: 540px;"></label>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                    <div class="control">
+                        <button class="button is-family-monospace" type="reset" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-family-monospace" type="submit" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="delete_passwords_confirm" style="width: 300px; height: 250px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: black;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">Are you sure you want to delete all of your passwords?</p>
+            <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_passwords_confirm')">
+                        Cancel
+                    </button>
+                </div>
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_passwords_confirm'); deleteAllPasswords();">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="delete_passwords_alert" style="width: 300px; height: 250px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: black;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">All Passwords successfully deleted!</p>
+            <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_passwords_alert')">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="delete_notes_confirm" style="width: 300px; height: 250px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: black;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">Are you sure you want to delete all of your notes?</p>
+            <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_notes_confirm')">
+                        Cancel
+                    </button>
+                </div>
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_notes_confirm'); deleteAllNotes();">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="delete_notes_alert" style="width: 300px; height: 250px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: black;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">All Notes successfully deleted!</p>
+            <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_notes_alert')">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="delete_cards_confirm" style="width: 300px; height: 250px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: black;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">Are you sure you want to delete all of your cards?</p>
+            <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_cards_confirm')">
+                        Cancel
+                    </button>
+                </div>
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_cards_confirm'); deleteAllCards();">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="delete_cards_alert" style="width: 300px; height: 250px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: black;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">All Cards successfully deleted!</p>
+            <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_cards_alert')">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="delete_trash_confirm" style="width: 300px; height: 250px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: black;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">Are you sure you want to delete all of your deleted items?</p>
+            <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_trash_confirm')">
+                        Cancel
+                    </button>
+                </div>
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_trash_confirm'); deleteAllTrash();">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="delete_trash_alert" style="width: 300px; height: 250px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: black;">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">All Deleted Items permanently deleted!</p>
+            <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                <div class="control">
+                    <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_trash_alert')">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        /* Submits a form that turns the 2FA on or off for user */
+        function changeAuth() {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'settings' %}",
+                data: {'two_factor_auth':document.getElementById("switch").checked, 'form_type':'authForm'}, 
+            });
+        }
+        /* Submits the form that change user information */
+        function changeInfo(form){
+            $.ajax({
+                type: "POST",
+                url: "{% url 'settings' %}",
+                data: $(form).serialize(), 
+                success: function(response) {
+                    if (response.status == "success"){
+                        window.location.reload();
+                    } else {
+                        $('#errorContainer').html($(response.error));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Deletes all user passwords */
+        function deleteAllPasswords() {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'settings' %}",
+                data: {'form_type':'deleteAllPasswordsForm'}, 
+                success: function(response) {
+                    openModal("delete_passwords_alert");
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Deletes all user notes */
+        function deleteAllNotes() {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'settings' %}",
+                data: {'form_type':'deleteAllNotesForm'}, 
+                success: function(response) {
+                    openModal("delete_notes_alert");
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Deletes all user cards */
+        function deleteAllCards() {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'settings' %}",
+                data: {'form_type':'deleteAllCardsForm'}, 
+                success: function(response) {
+                    openModal("delete_cards_alert");
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Deletes all user deleted items permanently */
+        function deleteAllTrash() {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'settings' %}",
+                data: {'form_type':'deleteAllTrashForm'}, 
+                success: function(response) {
+                    openModal("delete_trash_alert");
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Opening modal */
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('is-active');
+            }
+        }
+        
+        /* Closing modal */
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('is-active');
+            }
+        }
+
+        /* Toggling dropdowns */
+        document.addEventListener('DOMContentLoaded', () => {
+            const navDropdown = document.getElementById('dropdown');
+            var two_factor_authentication_switch = document.getElementById("switch");
+            navDropdown.addEventListener('click', () => {
+                navDropdown.classList.toggle('is-active');
+            });
+
+            if ('{{ 2FA }}' == "False") {
+                two_factor_authentication_switch.checked = false;
+            } else {
+                two_factor_authentication_switch = true;
+            }
+        });
+    </script>
+</body>
+</html>

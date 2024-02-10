@@ -1,0 +1,38 @@
+{% if deletedItems %}
+    <!--Pagination below the page-->
+    <nav class="pagination is-centered">
+        {% if user_passwords.has_previous %}
+            <a href="?page={{ deletedItems.previous_page_number }}" onclick="event.preventDefault(); page_update(this);" class="pagination-previous">
+                <box-icon name='chevron-left' color='#ffffff' ></box-icon>
+            </a>
+        {% else %}
+            <a class="pagination-previous is-disabled">
+                <box-icon name='chevron-left' color='#ffffff' ></box-icon>
+            </a>
+        {% endif %}
+    
+        <ul class="pagination-list" >
+            {% for i in deletedItems.paginator.page_range %}
+                {% if deletedItems.number == i %}
+                    <li>
+                        <span class="pagination-link is-current has-text-white">{{ i }}</span>
+                    </li>
+                {% elif i > deletedItems.number|add:"-3" and i < deletedItems.number|add:"3" %}
+                    <li>
+                        <a href="?page={{ i }}" onclick="event.preventDefault(); page_update(this);" class="pagination-link has-text-white">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    
+        {% if deletedItems.has_next %}
+            <a href="?page={{ deletedItems.next_page_number }}" onclick="event.preventDefault(); page_update(this);" class="pagination-next">
+                <box-icon name='chevron-right' color='#ffffff' ></box-icon>
+            </a>
+        {% else %}
+            <a class="pagination-next is-disabled">
+                <box-icon name='chevron-right' color='#ffffff' ></box-icon>
+            </a>
+        {% endif %}
+    </nav>
+{% endif %}

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color:#1a1817;">
+<head>
+    {% load static %}
+    {% load django_simple_bulma %}
+    {% load widget_tweaks %}
+    {% bulma %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Piglock</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <!--Loads the css file containing the styling for the cards page-->
+    <link rel="stylesheet" href="{% static 'css/cards.css' %}">
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <style>
+        /* Sets the background image for every card */
+        .box {
+            background: url('{% static "card_background.jpeg" %}') no-repeat;
+            background-size: contain;
+            border-radius: 10px;
+            position: relative;
+            perspective: 1000px;
+        }
+    </style>
+</head>
+<!--Hides the scrollbar-->
+<body style="overflow-x: hidden;">
+    <!--Loads Boxicon and JQuery Package-->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <div class="tile is-ancestor is-2">
+        <!--Side Menu-->
+        <aside class="menu mt-3 ml-3 side_menu">
+            <div class="is-flex is-flex-direction-row is-align-items-center mt-2 ml-2">
+                <img class="mt-2 ml-2" src="{% static 'pig_icon.png' %}" width="40" height="100">
+                <span class="logo-name has-text-weight-bold is-family-monospace has-text-white ml-2 mt-2">Dark Piglock</span>
+            </div>
+            <p class="menu-label has-text-white is-family-monospace mt-5 ml-2">General</p>
+            <ul class="menu-list menulist mt-5 ml-2">
+                <li>
+                    <a class="icon-text is-family-monospace has-text-white is-family-monospace is-flex is-align-items-center" href="/dashboard/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='dashboard' type='solid' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/passwords/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='lock' type='solid' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Passwords</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/notes/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='edit' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Notes</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/cards/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='credit-card' type='solid' color='#ffffff' ></box-icon>
+                            </span>
+                        <span class="mt-2">Credit Cards</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/history/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='history' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">History</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/settings/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='cog' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <p class="menu-label has-text-white is-family-monospace mt-5 ml-2">Tools</p>
+            <ul class="menu-list menulist mt-5 ml-2">
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/password-generator/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='refresh' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Password Generator</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        </div>
+    </div>
+    <div class="main_content">
+        <!--Navigation Bar-->
+        <nav class="navbar custom_navbar is-fixed-top">
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item has-dropdown" id="dropdown">
+                        <a class="navbar-link is-family-monospace">{{ username }}</a>
+                        <div class="navbar-dropdown custom_dropdown">
+                            <a class="navbar-item is-family-monospace" onclick="openModal('credits')">
+                                Credits
+                            </a>
+                            <a class="navbar-item is-family-monospace" href="{% url 'logout' %}">
+                                Log Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!--Attribution Modal-->
+        <div class="modal" id="credits" style="width: 400px; height: 450px; position: fixed; top: 55%; left: 55%; transform: translate(-50%, -50%); z-index: 5;">
+            <div class="modal-background"></div>
+            <div class="modal-content" style="background-color: black; text-align: center; margin-top: 30px;">
+                <h1 style="color: white; font-family: monospace; font-size: 20px; margin-bottom: 20px;">Credits</h1>
+                <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852122.htm#query=dark%20theme%20vector%20background&position=8&from_view=search&track=ais&uuid=5fa2d0fc-99ae-437f-a630-cc21610266c7" style="color: white; font-family: monospace; text-decoration: underline;">Login Page and Sign Up Page Background Image by Freepik</a>
+                <br>
+                <a href="https://www.freepik.com/free-vector/background-luxury-minimalist-gradient-style-design_32582886.htm#page=2&query=dark%20vector%20background&position=30&from_view=search&track=ais&uuid=0b077dd1-421b-47da-a2d2-b748ddbd193a" style="color: white; font-family: monospace; text-decoration: underline;">Credit Card Background Image by arrandera</a>
+                <br>
+                <div style="font-family: monospace; color: white;"> Credit Card Chip Icon made by <a href="https://www.freepik.com" style="color: white; font-family: monospace; text-decoration: underline;" title="Freepik"> Freepik </a> from <a href="https://www.flaticon.com/" title="Flaticon" style="color: white; font-family: monospace; text-decoration: underline;">www.flaticon.com'</a></div>
+                <a href="https://www.freepik.com/icon/animal-rights_2865584#fromView=search&term=pig+lock&track=ais&page=1&position=31&uuid=3f7dfbf6-5dbb-4b17-812a-f2923c1652ca" style="color: white; font-family: monospace; text-decoration: underline;">Password Page Icon by Freepik</a>
+                <br>
+                <a href="https://icons8.com/icon/qudcNstH1hBC/pig" style="color: white; font-family: monospace; text-decoration: underline;">Website Pig Icon made by Vitaly Gorbachev on</a><a href="https://icons8.com/"style="color: white; font-family: monospace; text-decoration: underline;"> Icons8</a>
+                <br>
+                <a href="https://www.freepik.com/icon/book_6153987#fromView=search&term=pig+with+notebook&track=ais&page=1&position=17&uuid=06c214f7-3f84-4666-9a1f-06e42c4b8deb" style="color: white; font-family: monospace; text-decoration: underline;">Note Page Icon by Flowicon</a>
+                <br>
+                <div style="color: white; font-family: monospace;">Home Page Background Image by <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852128.htm#query=dark%20theme%20vector&position=12&from_view=search&track=ais&uuid=5c4ba701-a1f6-4f83-bbda-6470cbea0ae8" style="color: white; font-family: monospace; text-decoration: underline;">Freepik</a></div>
+                <a href="https://storyset.com/online" style="color: white; font-family: monospace; text-decoration: underline;">Home Page Illustration by Storyset</a>
+                <br>
+                <a href="https://www.freepik.com/icon/no-pork_9958719" style="color: white;  font-family: monospace; text-decoration: underline;">History Page Icon by Freepik</a>
+                <div class="field is-grouped-centered is-grouped" style="margin-top: 10px;">
+                    <div class="control">
+                        <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('credits')">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="columns is-multiline">
+            <div class="column top_column is-11">
+                <!--Header box-->
+                <div class="level">
+                    <div class="level-left">
+                        <div class="level-item ml-4 move_top">
+                            <div class="has-text-white is-family-monospace has-text-weight-bold">All Cards</div>
+                        </div>
+                        <div class="level-item">
+                            <div class="control has-icons-left mr-6 move_top" style="margin-left: 200px;">
+                                <!--If search_term is none, don't show anything in the search bar-->
+                                {% if search_term == None %}
+                                    <input class="input is-family-monospace" type="text" placeholder="Search" id="search_bar">
+                                {% else %}
+                                    <input class="input is-family-monospace" type="text" placeholder="Search" id="search_bar" value="{{ search_term }}">
+                                {% endif %}
+                                <span class="icon is-left ml-1">
+                                    <box-icon name='search' color='#ffffff'></box-icon>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="level-item" style="height: 10px; margin-top: -52px; margin-left: -40px;">
+                            <select class="type-dropdown is-family-monospace" style="height: 35px; border-radius: 5px; background-color: transparent; color: white; border-color: white;" id="type_dropdown">
+                                <option value="">Type</option>
+                                <option value="card_number">Card Number</option>
+                                <option value="card_type">Card Type</option>
+                                <option value="name">Name</option>
+                                <option value="date">Date</option>
+                                <option value="card_brand">Brand</option>
+                            </select>
+                        </div>
+                        {% if search_type %}
+                            <script>
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    var type_dropdown = document.getElementById('type_dropdown');
+                                    type_dropdown.value = "{{ search_type }}";
+                                });
+                            </script>
+                        {% endif %}
+                    </div>
+                    <div class="level-right">
+                        <div class="level-item move_top">
+                            <button class="button add_card_button mr-4" onclick="openModal('add_card_modal')"> 
+                                <span class="icon">
+                                    <box-icon name='plus' color='#ffffff' ></box-icon>
+                                </span>
+                                <span class="is-family-monospace">Add New</span>
+                            </button>
+                            <!--Add card modal, including the add card form-->
+                            <div class="modal add_card_modal" id="add_card_modal">
+                                <div class="modal-background"></div>
+                                <div class="modal-content has-text-white is-family-monospace">
+                                    <div id="add_card_form_container">
+                                        <form method="post" action="{% url 'cards' %}" id="add_card_form" onsubmit="event.preventDefault(); add_card();">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="addCardForm" name="form_type">
+                                            <div class="field" style="margin-top: 30px;">
+                                                <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Add Card</p>
+                                            </div>
+                                            <!--If there are errors, display them-->
+                                            {% if addForm.errors %}
+                                                <div class="notification" style="width: 400px; margin-left: 50px; margin-top: 20px;" id="add_card_modal_notification_{{ card.id }}">
+                                                    <button class="delete" aria-label="delete" onclick="closeNotification('add_card_modal_notification_{{card.id}}')"></button>
+                                                    <strong style="color: black; font-size: 18px;">Error:</strong>
+                                                    <ul class="has-text-weight-light" style="color: black; font-size: 15px;">
+                                                        {% for error_list in addForm.errors.values %}
+                                                            {% for error in error_list %}
+                                                                <li>{{ error }}</li>
+                                                            {% endfor %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            {% endif %}
+                                            <!--Fields of the form-->
+                                            <div class="field">
+                                                <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                                    Card Brand
+                                                </label>
+                                                <div class="control">
+                                                    {{ addForm.card_brand }}
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                                    Type of Card
+                                                </label>
+                                                <div class="control">
+                                                    {{ addForm.card_type }}
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                                    Cardholder Name
+                                                </label>
+                                                <div class="control">
+                                                    {{ addForm.cardholder_name }}
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                                    Card Number
+                                                </label>
+                                                <div class="control">
+                                                    {{ addForm.card_number }}
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                                    Security Code
+                                                </label>
+                                                <div class="control">
+                                                    {{ addForm.cvv }}
+                                                    <button class="button" type="button" onclick="add_toggle_password()" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -72.5px; margin-left: 175px;">
+                                                        <span class="icon" id="add_password_icon" style="font-size: 15px;">
+                                                            <box-icon name='hide' color='#ffffff' ></box-icon>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                                                    Expiration Date
+                                                </label>
+                                                <div class="control">
+                                                    {{ addForm.expiration_date }}
+                                                </div>
+                                            </div>
+                                            <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                                                <div class="control">
+                                                    <button class="button is-family-monospace" type="reset" onclick="closeModal('add_card_modal')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                                <div class="control">
+                                                    <button class="button is-family-monospace" type="submit" onclick="closeModal('add_card_modal')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                                        Add
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal" id="add_card_alert" style="width: 300px; height: 220px; position: fixed; top: 55%; left: 55%; transform: translate(-50%, -50%); background-color: black;">
+                                <div class="modal-background"></div>
+                                <div class="modal-content">
+                                    <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">Card successfully added!</p>
+                                    <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                                        <div class="control">
+                                            <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('add_card_alert')">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider"></div>
+            </div>
+        </div>
+        <div class="columns is-multiline" id="cardContainer">
+            <!--Looping through each card the user created-->
+            {% if user_cards %}
+                {% for card, editForm in user_cards %}
+                    <div class="column is-4" style="margin-top: 10px; margin-left: 110px; height: 250px;">
+                        <div class="box" style="height: 300px; border-radius: 10px;">
+                            <div class="box-inner" id="{{card.id}}_inner">
+                                <!--Front of the card-->
+                                <div class="front-box">
+                                    <div class="field">
+                                        <div style="color: white; font-size: 15px; text-transform: uppercase; font-family: 'Courier New', Courier, monospace; font-weight: bold;  margin-left: 5px; flex-direction:row;">{{ card.card_type }}</div>
+                                        <!--Dropdown for each card-->
+                                        <div class="dropdown" style="float: right; margin-top: -20px;">
+                                            <div class="dropdown-trigger">
+                                                <button class="button"  onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none;">
+                                                    <span class="icon" style="font-size: 20px;">
+                                                        <box-icon name='chevron-down' color='#ffffff' size='lg'></box-icon>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <!--Settings menu for each card-->
+                                            <div class="dropdown-menu">
+                                                <div class="dropdown-content">
+                                                    <a class="dropdown-item is-family-monospace" onclick="flipCard('{{card.id}}_inner')">
+                                                        Flip
+                                                    </a>
+                                                    <a class="dropdown-item is-family-monospace" onclick="openModal('edit_card_modal_{{card.id}}')">
+                                                        Edit
+                                                    </a>
+                                                    <a class="dropdown-item is-family-monospace" onclick="delete_card('{{card.id}}')">
+                                                        Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="color: white; font-size: 15px; text-transform: uppercase; font-family: 'Courier New', Courier, monospace; font-weight: bold; float: right; margin-top: -22px;">{{ card.card_brand }}</div>
+                                    </div>
+                                    <img src=" {% static 'card_chip.png' %}" style="margin-top: 5px; margin-left: 5px;">
+                                    <pre style="font-family: 'Courier New', Courier, monospace; color: white; font-size: 17px; background-color: transparent; margin-top: -10px; margin-left: -16px; font-weight: lighter;">{{ card.formatted_card_number }}</pre>
+                                    <pre style="font-family: 'Courier New', Courier, monospace; color: white; font-size: 17px; margin-left: -15px; text-align: left; background-color: transparent; margin-top: -15px; font-weight: lighter; text-transform: uppercase;">{{ card.get_cardholder_name }}</pre>
+                                    <div style="margin-top: -45px; text-align: right; margin-right: 10px; display: flex; justify-content: end;">
+                                        <div class="field">
+                                            <div style="font-family: 'Courier New', Courier, monospace; color: white; font-size: 8px;">VALID</div>
+                                            <div style="font-family: 'Courier New', Courier, monospace; color: white; font-size: 8px;">THRU</div>
+                                        </div>
+                                        <div style="font-family: 'Courier New', Courier, monospace; color: white; font-size: 12px; text-align: right; font-weight: lighter; margin-top: 2.5px; margin-left: 10px;">{{ card.get_expiration_date }}</div>
+                                    </div>
+                                </div>
+                                <!--Back of the card-->
+                                <div class="back-box">
+                                    <div class="field" style="margin-top: 20px;">
+                                        <!--Dropdown for each card-->
+                                        <div class="dropdown" style="float: right; margin-top: -20px;">
+                                            <div class="dropdown-trigger">
+                                                <button class="button"  onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none;">
+                                                    <span class="icon" style="font-size: 20px;">
+                                                        <box-icon name='chevron-down' color='#ffffff' size='lg'></box-icon>
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <!--Settings menu for each card-->
+                                            <div class="dropdown-menu">
+                                                <div class="dropdown-content">
+                                                    <a class="dropdown-item is-family-monospace" onclick="flipCard('{{card.id}}_inner')">
+                                                        Flip
+                                                    </a>
+                                                    <a class="dropdown-item is-family-monospace" onclick="openModal('edit_card_modal_{{card.id}}')">
+                                                        Edit
+                                                    </a>
+                                                    <a class="dropdown-item is-family-monospace" onclick="delete_card('{{card.id}}')">
+                                                        Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 90px;">
+                                        <span style="color: white; font-family: 'Courier New', Courier, monospace; font-size: 8px; text-transform: uppercase; margin-left: -10px;">Authorized Signature</span>
+                                        <span style="color: white; font-family: 'Courier New', Courier, monospace; text-transform: uppercase; font-size: 8px; float: right; margin-top: 10px;">Not valid unless signed</span>
+                                    </div>
+                                    <div style="background-color: white; height: 32.5px; width: 330px; margin-left: -18px;"></div>
+                                    <div style="text-align: right; color: black; font-family: 'Courier New', Courier, monospace; margin-top: -27.5px; font-style: italic;">{{ card.get_cvv }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Edit card modal, including the edit card form-->
+                    <div class="modal" id="edit_card_modal_{{card.id}}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <div class="modal-background"></div>
+                        <div class="modal-content has-text-white is-family-monospace">
+                            <div id="edit_card_form_container_{{ card.id }}">
+                                <form method="post" action="{% url 'cards' %}" onsubmit="event.preventDefault(); edit_card(this);">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="editCardForm" name="form_type">
+                                    <input type="hidden" value="{{ card.id }}" name="card_id">
+                                    <div class="field" style="margin-top: 30px;">
+                                        <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Edit Card</p>
+                                    </div>
+                                    <!--If there are errors, display them-->
+                                    {% if editForm.errors %}
+                                        <div class="notification" style="width: 400px; margin-left: 50px; margin-top: 20px;" id="edit_card_modal_notification_{{ card.id }}">
+                                            <button class="delete" type="button" onclick="closeNotification('edit_card_modal_notification_{{ card.id }}')"></button>
+                                            <strong style="color: black; font-size: 18px;">Error:</strong>
+                                            <ul class="has-text-weight-light" style="color: black; font-size: 15px;">
+                                                {% for error_list in editForm.errors.values %}
+                                                    {% for error in error_list %}
+                                                        <li>{{ error }}</li>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                    <!--Fields of the form-->
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Card Brand
+                                        </label>
+                                        <div class="control">
+                                            {% render_field editForm.card_brand value=card.card_brand %}
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Type of Card
+                                        </label>
+                                        <div class="control">
+                                            {% render_field editForm.card_type value=card.card_type %}
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Cardholder Name
+                                        </label>
+                                        <div class="control">
+                                            {% render_field editForm.cardholder_name value=card.get_cardholder_name %}
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Card Number
+                                        </label>
+                                        <div class="control">
+                                            {% render_field editForm.card_number value=card.get_card_number %}
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Security Code
+                                        </label>
+                                        <div class="control">
+                                            <input class="input is-family-monospace" style="width: 400px; margin-top: 10px; margin-left: 50px" value="{{ card.get_cvv }}" name="editForm_cvv" type="password" id="edit_card_modal_{{ card.id }}_password">
+                                            <button class="button" type="button" onclick="edit_toggle_password('{{ card.id }}')" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -72.5px; margin-left: 175px;">
+                                                <span class="icon" id="{{card.id}}_icon" style="font-size: 15px;">
+                                                    <box-icon name='hide' color='#ffffff' ></box-icon>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                                            Expiration Date
+                                        </label>
+                                        <div class="control">
+                                            {% render_field editForm.expiration_date value=card.get_expiration_date %}
+                                        </div>
+                                    </div>
+                                    <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                                        <div class="control">
+                                            <button class="button is-family-monospace" type="reset" onclick="closeModal('edit_card_modal_{{card.id}}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                            Cancel
+                                            </button>
+                                        </div>
+                                        <div class="control">
+                                            <button class="button is-family-monospace" type="submit" onclick="closeModal('edit_card_modal_{{card.id}}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                                Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <!--Pagination below the page-->
+        <div id="paginationContainer">
+            {% if user_cards %}
+                <nav class="pagination is-centered">
+                    {% if user_cards.has_previous %}
+                        <a href="?page={{ user_cards.previous_page_number }}" onclick="event.preventDefault(); page_update(this);"  class="pagination-previous">
+                            <box-icon name='chevron-left' color='#ffffff' ></box-icon>
+                        </a>
+                    {% else %}
+                        <a class="pagination-previous is-disabled">
+                            <box-icon name='chevron-left' color='#ffffff' ></box-icon>
+                        </a>
+                    {% endif %}
+                
+                    <ul class="pagination-list" >
+                        {% for i in user_cards.paginator.page_range %}
+                            {% if user_cards.number == i %}
+                                <li>
+                                    <span class="pagination-link is-current has-text-white">{{ i }}</span>
+                                </li>
+                            {% elif i > user_cards.number|add:"-3" and i < user_cards.number|add:"3" %}
+                                <li>
+                                    <a href="?page={{ i }}" onclick="event.preventDefault(); page_update(this);"  class="pagination-link has-text-white">{{ i }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                
+                    {% if user_cards.has_next %}
+                        <a href="?page={{ user_cards.next_page_number }}" onclick="event.preventDefault(); page_update(this);"  class="pagination-next">
+                            <box-icon name='chevron-right' color='#ffffff' ></box-icon>
+                        </a>
+                    {% else %}
+                        <a class="pagination-next is-disabled">
+                            <box-icon name='chevron-right' color='#ffffff' ></box-icon>
+                        </a>
+                    {% endif %}
+                </nav>
+            {% endif %}
+        </div>
+    <script>
+        /* Toggle the password visibility for adding cards */
+        function add_toggle_password(){
+            var passwordInput = document.getElementById('add_password_input');
+            var toggleIcon = document.getElementById("add_password_icon");
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.innerHTML = '<box-icon name="show" color="#ffffff"></box-icon>';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.innerHTML = '<box-icon name="hide" color="#ffffff"></box-icon>';
+            }
+        }
+
+        /* Toggle the password visibility for editting each card */
+        function edit_toggle_password(id){
+            var passwordInput = document.getElementById('edit_card_modal_' + id + '_password');
+            var toggleIcon = document.getElementById(id + "_icon");
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.innerHTML = '<box-icon name="show" color="#ffffff"></box-icon>';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.innerHTML = '<box-icon name="hide" color="#ffffff"></box-icon>';
+            }
+        }
+
+        /* Adds card to page */
+        function add_card() {
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "POST",
+                url: "{% url 'cards' %}?page=" + currentPage,
+                data: $('#add_card_form').serialize(),
+                success: function(response) {
+                    /* If form does not have error, update the pagination */
+                    if (response.status == "success") {
+                        $('#cardContainer').html($(response.card_list_html));
+                        $('#add_card_form_container').html($(response.add_card_form_html));
+                        $.ajax({
+                            type: "GET",
+                            url: "{% url 'cards' %}",
+                            data: { 'page': response.page, 'form_type': 'paginationForm'}, 
+                            success: function(response) {
+                                $('#paginationContainer').html($(response.pagination_html));
+                                openModal('add_card_alert');
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error updating pagination:", status, error);
+                            }
+                        });
+                    /* If form has error, open the modal */
+                    } else {
+                        $('#add_card_form_container').html($(response.add_card_form_html));
+                        openModal("add_card_modal");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error adding card:", status, error);
+                }
+            });
+        }
+
+        /* Edits the card information */
+        function edit_card(editForm) {
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "POST",
+                url: "{% url 'cards' %}",
+                data: $(editForm).serialize() + "&currentPage=" + currentPage, 
+                success: function(response) {
+                    /* If the form doesn't have error, update current page */
+                    if (response.status == "success") {
+                        $('#cardContainer').html($(response.card_list_html));
+                    /* If form has error, open the modal*/
+                    } else {
+                        $('#edit_card_form_container_' + response.card_id).html($(response.edit_card_form_html));
+                        openModal("edit_card_modal_" + response.card_id);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Sends a form with the id to delete the card */
+        function delete_card(id){
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "GET",
+                url: "{% url 'cards' %}",
+                data: {'form_type': 'deleteCardForm', 'card_to_delete_id':id, 'currentPage':currentPage}, 
+                success: function(response) {
+                    $('#cardContainer').html($(response.card_list_html));
+                    $('#paginationContainer').html($(response.pagination_html))
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Updates the card list based on page number */
+        function page_update(pagination_button) {
+            var page = $(pagination_button).attr("href").split("=")[1];
+            $.ajax({
+                type: "GET",
+                url: "{% url 'cards' %}",
+                data: {'page': page, 'form_type': 'page_updateForm'}, 
+                success: function(response) {
+                    $('#cardContainer').html($(response.card_list_html));
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'cards' %}",
+                        data: {'page': page, 'form_type': 'paginationForm'}, 
+                        success: function(response) {
+                            $('#paginationContainer').html($(response.pagination_html));
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error updating pagination:", status, error);
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating pagination:", status, error);
+                }
+            });
+        }
+
+        /* Opening modal */
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('is-active');
+            }
+        }
+        
+        /* Closing modal */
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('is-active');
+            }
+        }
+
+        /* Closing notification for adding card form */
+        function closeNotification(id){
+            const notification = document.getElementById(id);
+            if (notification) {
+                notification.remove();
+            }
+        }
+
+        /* Flips the card */
+        function flipCard(cardId) {
+            const card = document.getElementById(cardId);
+            card.classList.toggle('flipped');
+        }
+
+        /* Toggling dropdowns */
+        document.addEventListener('DOMContentLoaded', () => {
+            const navDropdown = document.getElementById('dropdown');
+            const cardContainer = document.getElementById('cardContainer');
+            const searchBar = document.getElementById('search_bar');
+            const type_dropdown = document.getElementById('type_dropdown');
+
+            navDropdown.addEventListener('click', () => {
+                navDropdown.classList.toggle('is-active');
+            });
+
+            cardContainer.addEventListener('click', (event) => {
+                const targetDropdown = event.target.closest('.dropdown');
+                
+                if (targetDropdown) {
+                    targetDropdown.classList.toggle('is-active');
+                }
+            });
+
+            /* Sends a form with the search term to update the displayed cards */
+            searchBar.addEventListener("keypress", function(event) {
+                if (event.key == "Enter") {
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'cards' %}",
+                        data: {'form_type': 'searchForm', 'search_term':searchBar.value, 'search_type':type_dropdown.value}, 
+                        success: function(response) {
+                            $('#cardContainer').html($(response.card_list_html));
+                            $('#paginationContainer').html($(response.pagination_html))
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error updating page:", status, error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

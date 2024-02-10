@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load django_simple_bulma %}
+    {% bulma %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Piglock</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <!--Loads the css file containing the styling for dashboard page-->
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<!--Hides the scrollbar-->
+<body style="overflow-x: hidden;">
+    <!--Loads chart.js package and boxicon package and JQuery-->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <div class="tile is-ancestor is-2">
+        <!--Side Menu-->
+        <aside class="menu mt-3 ml-3 side_menu">
+            <div class="is-flex is-flex-direction-row is-align-items-center mt-2 ml-2">
+                <img class="mt-2 ml-2" src="{% static 'pig_icon.png' %}" width="40" height="100">
+                <span class="logo-name has-text-weight-bold is-family-monospace has-text-white ml-2 mt-2">Dark Piglock</span>
+            </div>
+            <p class="menu-label has-text-white is-family-monospace mt-5 ml-2">General</p>
+            <ul class="menu-list menulist mt-5 ml-2">
+                <li>
+                    <a class="icon-text is-family-monospace has-text-white is-family-monospace is-flex is-align-items-center" href="/dashboard/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='dashboard' type='solid' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/passwords/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='lock' type='solid' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Passwords</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/notes/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='edit' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Notes</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/cards/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='credit-card' type='solid' color='#ffffff' ></box-icon>
+                            </span>
+                        <span class="mt-2">Credit Cards</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/history/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='history' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">History</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/settings/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='cog' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <p class="menu-label has-text-white is-family-monospace mt-5 ml-2">Tools</p>
+            <ul class="menu-list menulist mt-5 ml-2">
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/password-generator/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='refresh' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Password Generator</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        </div>
+    </div>
+    <div class="main_content">
+        <!--Navigation bar-->
+        <nav class="navbar custom_navbar is-fixed-top">
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item has-dropdown" id="dropdown">
+                        <a class="navbar-link is-family-monospace">{{ username }}</a>
+                        <div class="navbar-dropdown custom_dropdown">
+                            <a class="navbar-item is-family-monospace" onclick="openModal('credits')">
+                                Credits
+                            </a>
+                            <a class="navbar-item is-family-monospace" href="{% url 'logout' %}">
+                                Log Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!--Attribution Modal-->
+        <div class="modal" id="credits" style="width: 400px; height: 450px; position: fixed; top: 55%; left: 55%; transform: translate(-50%, -50%); z-index: 5;">
+            <div class="modal-background"></div>
+            <div class="modal-content" style="background-color: black; text-align: center; margin-top: 30px;">
+                <h1 style="color: white; font-family: monospace; font-size: 20px; margin-bottom: 20px;">Credits</h1>
+                <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852122.htm#query=dark%20theme%20vector%20background&position=8&from_view=search&track=ais&uuid=5fa2d0fc-99ae-437f-a630-cc21610266c7" style="color: white; font-family: monospace; text-decoration: underline;">Login Page and Sign Up Page Background Image by Freepik</a>
+                <br>
+                <a href="https://www.freepik.com/free-vector/background-luxury-minimalist-gradient-style-design_32582886.htm#page=2&query=dark%20vector%20background&position=30&from_view=search&track=ais&uuid=0b077dd1-421b-47da-a2d2-b748ddbd193a" style="color: white; font-family: monospace; text-decoration: underline;">Credit Card Background Image by arrandera</a>
+                <br>
+                <div style="font-family: monospace; color: white;"> Credit Card Chip Icon made by <a href="https://www.freepik.com" style="color: white; font-family: monospace; text-decoration: underline;" title="Freepik"> Freepik </a> from <a href="https://www.flaticon.com/" title="Flaticon" style="color: white; font-family: monospace; text-decoration: underline;">www.flaticon.com'</a></div>
+                <a href="https://www.freepik.com/icon/animal-rights_2865584#fromView=search&term=pig+lock&track=ais&page=1&position=31&uuid=3f7dfbf6-5dbb-4b17-812a-f2923c1652ca" style="color: white; font-family: monospace; text-decoration: underline;">Password Page Icon by Freepik</a>
+                <br>
+                <a href="https://icons8.com/icon/qudcNstH1hBC/pig" style="color: white; font-family: monospace; text-decoration: underline;">Website Pig Icon made by Vitaly Gorbachev on</a><a href="https://icons8.com/"style="color: white; font-family: monospace; text-decoration: underline;"> Icons8</a>
+                <br>
+                <a href="https://www.freepik.com/icon/book_6153987#fromView=search&term=pig+with+notebook&track=ais&page=1&position=17&uuid=06c214f7-3f84-4666-9a1f-06e42c4b8deb" style="color: white; font-family: monospace; text-decoration: underline;">Note Page Icon by Flowicon</a>
+                <br>
+                <div style="color: white; font-family: monospace;">Home Page Background Image by <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852128.htm#query=dark%20theme%20vector&position=12&from_view=search&track=ais&uuid=5c4ba701-a1f6-4f83-bbda-6470cbea0ae8" style="color: white; font-family: monospace; text-decoration: underline;">Freepik</a></div>
+                <a href="https://storyset.com/online" style="color: white; font-family: monospace; text-decoration: underline;">Home Page Illustration by Storyset</a>
+                <br>
+                <a href="https://www.freepik.com/icon/no-pork_9958719" style="color: white;  font-family: monospace; text-decoration: underline;">History Page Icon by Freepik</a>
+                <div class="field is-grouped-centered is-grouped" style="margin-top: 10px;">
+                    <div class="control">
+                        <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('credits')">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Visual Design of the dashboard-->
+        <div class="columns">
+            <div class="column is-one-fifth">
+                <div class="icon-text has-text-white is-family-monospace is-flex is-flex-direction-column">
+                    <span class="is-align-self-center mt-4 ml-4">
+                        <box-icon name='lock' type='solid' color='#ffffff' size="lg"></box-icon>
+                    </span>
+                    <span class="mt-5 is-size-4 ml-5">{{ number_of_passwords }}</span>
+                    <span class="is-size-7 ml-5">Passwords</span>
+                </div>
+            </div>
+            <div class="column is-one-fifth">
+                <div class="icon-text has-text-white is-family-monospace is-flex is-flex-direction-column">
+                    <span class="is-align-self-center mt-4 ml-4">
+                        <box-icon name='notepad' type='solid' color='#ffffff' size="lg"></box-icon>
+                    </span>
+                    <span class="mt-5 is-size-4 ml-5">{{ number_of_notes }}</span>
+                    <span class="is-size-7 ml-5">Notes</span>
+                </div>
+            </div>
+            <div class="column is-one-fifth">
+                <div class="icon-text has-text-white is-family-monospace is-flex is-flex-direction-column">
+                    <span class="is-align-self-center mt-4 ml-4">
+                        <box-icon name='credit-card-front'type="solid" color='#ffffff' size="lg"></box-icon>
+                    </span>
+                    <span class="mt-5 is-size-4 ml-5">{{ number_of_cards }}</span>
+                    <span class="is-size-7 ml-5">Credit Cards</span>
+                </div>
+            </div>
+            <div class="column is-one-fifth">
+                <div class="icon-text has-text-white is-family-monospace is-flex is-flex-direction-column">
+                    <span class="is-align-self-center mt-4 ml-4">
+                        <box-icon name='trash' type='solid' color='#ffffff' size="lg"></box-icon>
+                    </span>
+                    <span class="mt-5 is-size-4 ml-5">{{ number_of_deleted_items }}</span>
+                    <span class="is-size-7 ml-5">Deleted Items</span>
+                </div>
+            </div>
+        </div>
+
+        <!--Creates two graphs displaying information about the user-->
+        <div class="section section_line_graph has-background-black">
+            <canvas id="activityChart" width="600" height="360"></canvas>
+        </div>
+        <div class="section section_bar_graph has-background-black">
+            <canvas id="numberOfItemsChart" width="400" height="360"></canvas>
+        </div>
+    </div>
+    <!--Toggling the dropdown-->
+    <script>
+        /* Opening modal */
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('is-active');
+            }
+        }
+        
+        /* Closing modal */
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('is-active');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            var dropdown = document.getElementById('dropdown');
+
+            dropdown.addEventListener('click', function () {
+                dropdown.classList.toggle('is-active');
+            });
+
+            document.addEventListener('click', function (event) {
+                if (dropdown.contains(event.target) == false) {
+                    dropdown.classList.remove('is-active');
+                }
+            });
+
+            var linectx = document.getElementById('activityChart').getContext('2d');
+        var lineactivityChart;
+
+        $.ajax({
+            type: "GET",
+            url: "{% url 'dashboard' %}",
+            data: {'form_type': 'activityForm'}, 
+            success: function(response) {
+                lineactivityData.labels = response.labels;
+                lineactivityData.datasets[0].data = response.data;
+
+                if (lineactivityChart) {
+                    lineactivityChart.data.labels = lineactivityData.labels;
+                    lineactivityChart.data.datasets[0].data = lineactivityData.datasets[0].data;
+                    lineactivityChart.update();
+                } else {
+                    activityChart = new Chart(linectx, {
+                        type: 'line',
+                        data: lineactivityData,
+                        options: {
+                            scales: {
+                                y: {
+                                    ticks: {color: "white", beginAtZero: true}
+                                },
+                                x: {
+                                    ticks: {color: "white"}
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: "white"
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", status, error);
+            }
+        });
+
+        var lineactivityData = {
+            labels: [],
+            datasets: [{
+                label: 'User Activity',
+                backgroundColor: 'black',
+                borderColor: 'white',
+                borderWidth: 2,
+                data: [],
+            }]
+        };
+            var baractivityData = {
+                labels: ["Passwords", "Notes", "Credit Cards"],
+                datasets: [{
+                    label: 'Number of Items',
+                    backgroundColor: 'black',
+                    borderColor: 'white',
+                    borderWidth: 2,
+                    data: ['{{ number_of_passwords }}', '{{ number_of_notes }}', '{{ number_of_cards }}'],
+                }]
+            };
+            var barctx = document.getElementById('numberOfItemsChart');
+            var baractivityChart = new Chart(barctx, {
+                type: 'bar',
+                data: baractivityData,
+                options: {
+                    scales: {
+                        y: {
+                            ticks: {color: "white", beginAtZero: true}
+                        },
+                        x: {
+                            ticks: {color: "white"}
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: "white"
+                            }
+                        }
+                    }
+                }
+            });
+    });
+    </script>
+</body>
+</html>

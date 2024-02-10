@@ -1,0 +1,246 @@
+/* Hides the scrollbar for the whole page below nav bar */
+body::-webkit-scrollbar,
+.main_content::-webkit-scrollbar {
+    width: 0px;
+}
+
+/* Side menu */
+.side_menu {
+    background-color: black;
+    height:100%;
+    position: fixed;
+    width:250px;
+}
+
+/* Side menu */
+.menulist li + li {
+    margin-top: 5px;
+}
+
+/* Side menu */
+.menu-list a:hover {
+    background-color: transparent;
+}
+
+/* The screen on right of side menu */
+.main_content {
+    overflow-y: auto;
+    height: 100%;
+    background-color: #1a1817;
+    margin-left: 250px;
+}
+
+/* Hides the scrollbar for the main screen */
+.main_content::-webkit-scrollbar-thumb,
+.maincontent::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* The navigation bar at the top */
+.custom_navbar {
+    background-color: transparent;
+    width:calc(100% - 250px);
+    margin-left: 250px;
+}
+
+/* The dropdown menu for username on top right corner */
+.custom_dropdown {
+    background-color: black;
+}
+
+/* The navigation bar at the top */
+.navbar-link:hover {
+    background-color: transparent !important;
+    color:white !important;
+}
+
+/* The navigation bar at the top */
+.navbar-item.is-active .navbar-link {
+    background-color: transparent !important;
+}
+
+/* The navigation bar at the top */
+.navbar-link:after {
+    border-color: white !important;
+}
+
+/* The navigation bar at the top */
+.navbar-link,
+.navbar-item {
+    color:white;
+}
+
+.level {
+    margin-top: 75px;
+    margin-left: 10px;
+}
+
+
+.level-item  {
+    font-size:19px;
+}
+
+/* The search bar */
+.input {
+    background-color: transparent;
+    color:white;
+    height:2.25em;
+
+}
+
+/* The search bar */
+.input:focus {
+    border-color: white !important;
+}
+
+/* The search bar */
+.input::placeholder {
+    color:white;
+    margin-left: 10px;
+}
+
+/* The add password button */
+.add_card_button {
+    height:38px;
+    background-color: black;
+    color:white;
+}
+
+/* The add password button */
+.add_card_button:hover {
+    color: white;
+}
+
+/* The add password button */
+.add_card_button:focus,
+.button:focus {
+    border-color: white;
+    color: white;
+}
+
+/* The form for adding a password */
+.add_card_modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+}
+
+/* The form for adding a password */
+.modal-content {
+    height: 100%;
+    width: 100%;
+}
+
+/* Hides the scrollbar in the add password form */
+.modal-content::-webkit-scrollbar {
+    width: 0px; 
+}
+
+/* Hides the scrollbar in the add password form */
+.modal-content::-webkit-scrollbar-thumb,
+.modal-content::-webkit-scrollbar-track {
+    background-color: transparent; 
+}
+
+/* A line in between the passwords and the title */
+.divider {
+    border-top: 2px solid white;
+}
+
+/* The section that includes the title area */
+.top_column {
+    background-color: black;
+    margin-top:100px;
+    height:125px;
+    margin-left:42.5px;
+    border-radius: 10px;
+}
+
+/* Moves every item in the title area up */
+.move_top {
+    margin-top:-50px;
+}
+
+/* Dropdown menu for each passwords */
+.dropdown-menu {
+    min-width: 10px !important;
+}
+
+.dropdown-content {
+    background-color: black !important;
+}
+
+/* Dropdown items in the menu for each passwords */
+.dropdown-item {
+    height: 30px;
+    color:white;
+}
+
+/* The card itself */
+.box-inner {
+    transform-style: preserve-3d;
+    transition: all 0.6s ease;
+}
+
+/* Flips the card */
+.box-inner.flipped {
+    transform: rotateY(180deg);
+}
+
+/* Both side of the card */
+.front-box,
+.back-box {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+}
+
+/* Back of the card */
+.back-box {
+    transform: rotateY(180deg);
+}
+
+/* The whole page system */
+.pagination.is-centered {
+    display: flex;
+    margin-top: 150px;
+    justify-content: center;
+}
+
+/* The previous and next page button */
+.pagination-next:focus,
+.pagination-previous:focus,
+.pagination-link:focus {
+    border-color: white;
+}
+
+/* Each page button */
+.pagination-link.is-current {
+    background-color: transparent; 
+    border-color: white; 
+}
+
+/* Removes the background of a disabled previous and next button */
+.pagination-previous.is-disabled,
+.pagination-next.is-disabled {
+    background-color: transparent;
+}
+
+/* Dropdown for the search bar */
+.type-dropdown {
+    border-color: white;
+    outline-width: 0px;
+    background-color: black !important;
+    color: white;
+    width: 120px;   
+}
+
+/* Hides the spinner */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}

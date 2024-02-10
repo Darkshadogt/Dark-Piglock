@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load django_simple_bulma %}
+    {% load widget_tweaks %}
+    {% bulma %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Piglock</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <!--Loads the css file containing the styling for history page-->
+    <link rel="stylesheet" href="{% static 'css/history.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bulma-list.css' %}">
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+</head>
+<!--Hides the scrollbar-->
+<body style="overflow-x: hidden;">
+    <!--Loads Boxicon and JQuery Package-->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <div class="tile is-ancestor is-2">
+        <!--Side Menu-->
+        <aside class="menu mt-3 ml-3 side_menu">
+            <div class="is-flex is-flex-direction-row is-align-items-center mt-2 ml-2">
+                <img class="mt-2 ml-2" src="{% static 'pig_icon.png' %}" width="40" height="100">
+                <span class="logo-name has-text-weight-bold is-family-monospace has-text-white ml-2 mt-2">Dark Piglock</span>
+            </div>
+            <p class="menu-label has-text-white is-family-monospace mt-5 ml-2">General</p>
+            <ul class="menu-list menulist mt-5 ml-2">
+                <li>
+                    <a class="icon-text is-family-monospace has-text-white is-family-monospace is-flex is-align-items-center" href="/dashboard/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='dashboard' type='solid' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/passwords/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='lock' type='solid' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Passwords</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/notes/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='edit' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Notes</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/cards/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='credit-card' type='solid' color='#ffffff' ></box-icon>
+                            </span>
+                        <span class="mt-2">Credit Cards</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/history/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='history' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">History</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/settings/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='cog' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <p class="menu-label has-text-white is-family-monospace mt-5 ml-2">Tools</p>
+            <ul class="menu-list menulist mt-5 ml-2">
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/password-generator/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='refresh' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Password Generator</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+    </div>
+    <div class="main_content">
+        <!--Navigation Bar-->
+        <nav class="navbar custom_navbar is-fixed-top">
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item has-dropdown" id="dropdown">
+                        <a class="navbar-link is-family-monospace">{{ username }}</a>
+                        <div class="navbar-dropdown custom_dropdown">
+                            <a class="navbar-item is-family-monospace" onclick="openModal('credits')">
+                                Credits
+                            </a>
+                            <a class="navbar-item is-family-monospace" href="{% url 'logout' %}">
+                                Log Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!--Attribution Modal-->
+        <div class="modal" id="credits" style="width: 400px; height: 450px; position: fixed; top: 55%; left: 55%; transform: translate(-50%, -50%); z-index: 5;">
+            <div class="modal-background"></div>
+            <div class="modal-content" style="background-color: black; text-align: center; margin-top: 30px;">
+                <h1 style="color: white; font-family: monospace; font-size: 20px; margin-bottom: 20px;">Credits</h1>
+                <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852122.htm#query=dark%20theme%20vector%20background&position=8&from_view=search&track=ais&uuid=5fa2d0fc-99ae-437f-a630-cc21610266c7" style="color: white; font-family: monospace; text-decoration: underline;">Login Page and Sign Up Page Background Image by Freepik</a>
+                <br>
+                <a href="https://www.freepik.com/free-vector/background-luxury-minimalist-gradient-style-design_32582886.htm#page=2&query=dark%20vector%20background&position=30&from_view=search&track=ais&uuid=0b077dd1-421b-47da-a2d2-b748ddbd193a" style="color: white; font-family: monospace; text-decoration: underline;">Credit Card Background Image by arrandera</a>
+                <br>
+                <div style="font-family: monospace; color: white;"> Credit Card Chip Icon made by <a href="https://www.freepik.com" style="color: white; font-family: monospace; text-decoration: underline;" title="Freepik"> Freepik </a> from <a href="https://www.flaticon.com/" title="Flaticon" style="color: white; font-family: monospace; text-decoration: underline;">www.flaticon.com'</a></div>
+                <a href="https://www.freepik.com/icon/animal-rights_2865584#fromView=search&term=pig+lock&track=ais&page=1&position=31&uuid=3f7dfbf6-5dbb-4b17-812a-f2923c1652ca" style="color: white; font-family: monospace; text-decoration: underline;">Password Page Icon by Freepik</a>
+                <br>
+                <a href="https://icons8.com/icon/qudcNstH1hBC/pig" style="color: white; font-family: monospace; text-decoration: underline;">Website Pig Icon made by Vitaly Gorbachev on</a><a href="https://icons8.com/"style="color: white; font-family: monospace; text-decoration: underline;"> Icons8</a>
+                <br>
+                <a href="https://www.freepik.com/icon/book_6153987#fromView=search&term=pig+with+notebook&track=ais&page=1&position=17&uuid=06c214f7-3f84-4666-9a1f-06e42c4b8deb" style="color: white; font-family: monospace; text-decoration: underline;">Note Page Icon by Flowicon</a>
+                <br>
+                <div style="color: white; font-family: monospace;">Home Page Background Image by <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852128.htm#query=dark%20theme%20vector&position=12&from_view=search&track=ais&uuid=5c4ba701-a1f6-4f83-bbda-6470cbea0ae8" style="color: white; font-family: monospace; text-decoration: underline;">Freepik</a></div>
+                <a href="https://storyset.com/online" style="color: white; font-family: monospace; text-decoration: underline;">Home Page Illustration by Storyset</a>
+                <br>
+                <a href="https://www.freepik.com/icon/no-pork_9958719" style="color: white;  font-family: monospace; text-decoration: underline;">History Page Icon by Freepik</a>
+                <div class="field is-grouped-centered is-grouped" style="margin-top: 10px;">
+                    <div class="control">
+                        <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('credits')">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="columns is-multiline">
+            <div class="column top_column is-11">
+                <!--Header box-->
+                <div class="level">
+                    <div class="level-left">
+                        <div class="level-item ml-4 move_top">
+                            <div class="has-text-white is-family-monospace has-text-weight-bold">Deleted Items</div>
+                        </div>
+                    </div>
+                    <div class="level-right">
+                        <div class="level-item">
+                            <div class="control has-icons-left mr-6 move_top" style="margin-left: 150px;">
+                                <!--If search_term is none, don't show anything in the search bar-->
+                                {% if search_term == None %}
+                                    <input class="input is-family-monospace" type="text" placeholder="Search" id="search_bar">
+                                {% else %}
+                                    <input class="input is-family-monospace" type="text" placeholder="Search" id="search_bar" value="{{ search_term }}">
+                                {% endif %}
+                                <span class="icon is-left ml-1">
+                                    <box-icon name='search' color='#ffffff'></box-icon>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="level-item" style="height: 10px; margin-top: -52px; margin-left: -40px;">
+                            <select class="type-dropdown is-family-monospace" style="height: 35px; border-radius: 5px; background-color: transparent; color: white; border-color: white;" id="type_dropdown">
+                                <option value="">Type</option>
+                                <option value="all">All</option>
+                                <option value="passwords">Passwords</option>
+                                <option value="notes">Notes</option>
+                                <option value="cards">Cards</option>
+                            </select>
+                        </div>
+                        {% if search_type %}
+                            <script>
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    var type_dropdown = document.getElementById('type_dropdown');
+                                    type_dropdown.value = "{{ search_type }}";
+                                });
+                            </script>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="divider"></div>
+            </div>
+        </div>
+        <div class="list" style="margin-left: 42.5px; width: 940px;" id="historyContainer">
+            {% if deletedItems %}
+                {% for item in deletedItems %}
+                    <div class="list-item box">
+                        <div class="list-item-image">
+                            <img class="is-rounded" src="{% static 'pig_deleted.png' %}">
+                        </div>
+                        {% if item.get_model_name == "password" %}
+                            <div class="list-item-content">
+                                <div class="list-item-title is-family-monospace" style="color: white; font-weight: normal;">{{ item.website_name }}</div>
+                                <div class="list-item-description is-family-monospace" style="color: white; font-weight: lighter; font-size: medium;">Password</div>
+                            </div>
+                            <div class="list-item-controls">
+                                <div class="buttons is-right">
+                                    <button class="button" onclick="openModal('view_password_modal_{{ item.id }}')">
+                                        <span class="icon is-small">
+                                            <box-icon name='show' color='#ffffff'></box-icon>
+                                        </span>
+                                        <span class="is-family-monospace">View</span>
+                                    </button>
+                                    <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); recover_password(this);">
+                                        <input type="hidden" name="form_type" value="recoveryForm">
+                                        <input type="hidden" name="item_type" value="password">
+                                        <input type="hidden" name="password_id" value="{{ item.id }}">
+                                        <button type="submit" class="button">
+                                            <span class="icon is-small">
+                                                <box-icon name='revision' color='#ffffff'></box-icon>
+                                            </span>
+                                            <span class="is-family-monospace">Recover</span>
+                                        </button>
+                                    </form>
+                                    <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); delete_password(this)";>
+                                        <input type="hidden" name="form_type" value="deletionForm">
+                                        <input type="hidden" name="item_type" value="password">
+                                        <input type="hidden" name="password_id" value="{{ item.id }}">
+                                        <button type="submit" class="button">
+                                            <span class="icon is-small">
+                                                <box-icon name='trash' color='#ffffff'></box-icon>
+                                            </span>
+                                            <span class="is-family-monospace">Delete</span>
+                                        </button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--View password modal-->
+                            <div class="modal" id="view_password_modal_{{ item.id }}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                <div class="modal-background"></div>
+                                <div class="modal-content has-text-white is-family-monospace">
+                                    <div class="field" style="margin-top: 20px;">
+                                        <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">{{ item.website_name }}</p>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Username
+                                        </label>
+                                        <input class="input is-family-monospace" type="text" value="{{ item.get_username }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Password
+                                        </label>
+                                        <input id="view_password_modal_{{ item.id }}_password" class="input is-family-monospace" type="password" value="{{ item.get_password }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                                        <button class="button" type="button" onclick="view_toggle_password('{{ item.id }}')" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -26px; margin-left: -330px;">
+                                            <span class="icon" id="view_password_modal_{{ item.id }}_icon" style="font-size: 15px;">
+                                                <box-icon name='hide' color='#ffffff'></box-icon>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Email
+                                        </label>
+                                        <input class="input is-family-monospace" type="text"  value="{{ item.get_email }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Website Link
+                                        </label>
+                                        <input class="input is-family-monospace" type="text" value="{{ item.website_url }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Short Description
+                                        </label>
+                                        <input class="input is-family-monospace" type="text" value="{{ item.short_description }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                                    </div>
+                                    <div class="field" style="width: 400px;">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Detailed Description
+                                        </label>
+                                        <textarea class="textarea is-family-monospace" type="text" style="margin-top: 10px; margin-left: 50px; background-color: transparent;" readonly>{{ item.detailed_description }}</textarea>
+                                    </div>
+                                </div>
+                                <button class="modal-close is-large" type="button" onclick="closeModal('view_password_modal_{{ item.id }}')"></button>
+                            </div>
+                        {% elif item.get_model_name == "note" %}
+                            <div class="list-item-content">
+                                <div class="list-item-title is-family-monospace" style="color: white; font-weight: normal;">{{ item.title }}</div>
+                                <div class="list-item-description is-family-monospace" style="color: white; font-weight: lighter; font-size: medium;">Note</div>
+                            </div>
+                            <div class="list-item-controls">
+                                <div class="buttons is-right">
+                                    <button class="button" onclick="openModal('view_note_modal_{{ item.id }}')">
+                                        <span class="icon is-small">
+                                            <box-icon name='show' color='#ffffff'></box-icon>
+                                        </span>
+                                        <span class="is-family-monospace">View</span>
+                                    </button>
+                                    <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); recover_note(this);">
+                                        <input type="hidden" name="form_type" value="recoveryForm">
+                                        <input type="hidden" name="item_type" value="note">
+                                        <input type="hidden" name="note_id" value="{{ item.id }}">
+                                        <button type="submit" class="button">
+                                            <span class="icon is-small">
+                                                <box-icon name='revision' color='#ffffff'></box-icon>
+                                            </span>
+                                            <span class="is-family-monospace">Recover</span>
+                                        </button>
+                                    </form>
+                                    <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); delete_note(this);">
+                                        <input type="hidden" name="form_type" value="deletionForm">
+                                        <input type="hidden" name="item_type" value="note">
+                                        <input type="hidden" name="note_id" value="{{ item.id }}">
+                                        <button type="submit" class="button">
+                                            <span class="icon is-small">
+                                                <box-icon name='trash' color='#ffffff'></box-icon>
+                                            </span>
+                                            <span class="is-family-monospace">Delete</span>
+                                        </button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--View Note Modal-->
+                            <div class="modal" id="view_note_modal_{{ item.id }}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                <div class="modal-background"></div>
+                                <div class="modal-content has-text-white is-family-monospace">
+                                    <div class="field" style="margin-top: 20px;">
+                                        <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">{{ item.title }}</p>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Description
+                                        </label>
+                                        <textarea class="input is-family-monospace" type="text" style="width: 400px; margin-top: 10px; margin-left: 50px; height: 400px" readonly>{{ item.get_content }}</textarea>
+                                    </div>
+                                </div>
+                                <button class="modal-close is-large" type="button" onclick="closeModal('view_note_modal_{{ item.id }}')"></button>
+                            </div>
+                        {% else %}
+                            <div class="list-item-content">
+                                <div class="list-item-title is-family-monospace" style="color: white; font-weight: normal;">{{ item.get_card_number }}</div>
+                                <div class="list-item-description is-family-monospace" style="color: white; font-weight: lighter; font-size: medium;">Card</div>
+                            </div>
+                            <div class="list-item-controls">
+                                <div class="buttons is-right">
+                                    <button class="button" onclick="openModal('view_card_modal_{{ item.id }}')">
+                                        <span class="icon is-small">
+                                            <box-icon name='show' color='#ffffff'></box-icon>
+                                        </span>
+                                        <span class="is-family-monospace">View</span>
+                                    </button>
+                                    <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); recover_card(this);">
+                                        <input type="hidden" name="form_type" value="recoveryForm">
+                                        <input type="hidden" name="item_type" value="card">
+                                        <input type="hidden" name="card_id" value="{{ item.id }}">
+                                        <button type="submit" class="button">
+                                            <span class="icon is-small">
+                                                <box-icon name='revision' color='#ffffff'></box-icon>
+                                            </span>
+                                            <span class="is-family-monospace">Recover</span>
+                                        </button>
+                                    </form>
+                                    <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); delete_card(this);">
+                                        <input type="hidden" name="form_type" value="deletionForm">
+                                        <input type="hidden" name="item_type" value="card">
+                                        <input type="hidden" name="card_id" value="{{ item.id }}">
+                                        <button type="submit" class="button">
+                                            <span class="icon is-small">
+                                                <box-icon name='trash' color='#ffffff'></box-icon>
+                                            </span>
+                                            <span class="is-family-monospace">Delete</span>
+                                        </button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--View Card Modal-->
+                            <div class="modal" id="view_card_modal_{{ item.id }}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                <div class="modal-background"></div>
+                                <div class="modal-content has-text-white is-family-monospace">
+                                    <div class="field" style="margin-top: 30px;">
+                                        <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">{{ item.card_type }}</p>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 20px; margin-left: 50px;">
+                                            Card Brand
+                                        </label>
+                                        <input class="input is-family-monospace" type="text" value="{{ item.card_brand }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 20px; margin-left: 50px;">
+                                            Cardholder Name
+                                        </label>
+                                        <input class="input is-family-monospace" type="text" value="{{ item.get_cardholder_name }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 20px; margin-left: 50px;">
+                                            Card Number
+                                        </label>
+                                        <input class="input is-family-monospace" type="text"  value="{{ item.get_card_number }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 20px; margin-left: 50px;">
+                                            Security Code
+                                        </label>
+                                        <input id="view_card_modal_{{ item.id }}_cvv" class="input is-family-monospace" type="password" value="{{ item.get_cvv }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                                        <button class="button" type="button" onclick="view_toggle_cvv('{{ item.id }}')" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -72.5px; margin-left: 175px;">
+                                            <span class="icon" id="view_card_modal_{{ item.id }}_icon" style="font-size: 15px;">
+                                                <box-icon name='hide' color='#ffffff'></box-icon>
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="field" style="margin-top: -20px;">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 20px; margin-left: 50px;">
+                                            Expiration Date
+                                        </label>
+                                        <input class="input is-family-monospace" type="text"  value="{{ item.get_expiration_date }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                                    </div>
+                                </div>
+                                <button class="modal-close is-large" type="button" onclick="closeModal('view_card_modal_{{ item.id }}')"></button>
+                            </div>
+                        {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="modal" id="delete_item_alert" style="width: 300px; height: 220px; position: fixed; top: 55%; left: 55%; transform: translate(-50%, -50%); background-color: black;">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">Item permanently deleted!</p>
+                <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                    <div class="control">
+                        <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('delete_item_alert')">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="recover_item_alert" style="width: 300px; height: 220px; position: fixed; top: 55%; left: 55%; transform: translate(-50%, -50%); background-color: black;">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">Item successfully recovered!</p>
+                <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                    <div class="control">
+                        <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('recover_item_alert')">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="paginationContainer">
+            {% if deletedItems %}
+                <!--Pagination below the page-->
+                <nav class="pagination is-centered">
+                    {% if user_passwords.has_previous %}
+                        <a href="?page={{ deletedItems.previous_page_number }}" onclick="event.preventDefault(); page_update(this);" class="pagination-previous">
+                            <box-icon name='chevron-left' color='#ffffff' ></box-icon>
+                        </a>
+                    {% else %}
+                        <a class="pagination-previous is-disabled">
+                            <box-icon name='chevron-left' color='#ffffff' ></box-icon>
+                        </a>
+                    {% endif %}
+                
+                    <ul class="pagination-list" >
+                        {% for i in deletedItems.paginator.page_range %}
+                            {% if deletedItems.number == i %}
+                                <li>
+                                    <span class="pagination-link is-current has-text-white">{{ i }}</span>
+                                </li>
+                            {% elif i > deletedItems.number|add:"-3" and i < deletedItems.number|add:"3" %}
+                                <li>
+                                    <a href="?page={{ i }}" onclick="event.preventDefault(); page_update(this);" class="pagination-link has-text-white">{{ i }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                
+                    {% if deletedItems.has_next %}
+                        <a href="?page={{ deletedItems.next_page_number }}" onclick="event.preventDefault(); page_update(this);" class="pagination-next">
+                            <box-icon name='chevron-right' color='#ffffff' ></box-icon>
+                        </a>
+                    {% else %}
+                        <a class="pagination-next is-disabled">
+                            <box-icon name='chevron-right' color='#ffffff' ></box-icon>
+                        </a>
+                    {% endif %}
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        /* Toggle the password visibility for viewing each deleted password */
+        function view_toggle_password(id){
+            var passwordInput = document.getElementById('view_password_modal_' + id + '_password');
+            var toggleIcon = document.getElementById('view_password_modal_' + id + '_icon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.innerHTML = '<box-icon name="show" color="#ffffff"></box-icon>';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.innerHTML = '<box-icon name="hide" color="#ffffff"></box-icon>';
+            }
+        }
+
+        /* Toggle the cvv visibility for viewing each deleted card */
+        function view_toggle_cvv(id){
+            var passwordInput = document.getElementById('view_card_modal_' + id + '_cvv');
+            var toggleIcon = document.getElementById('view_card_modal_' + id + '_icon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.innerHTML = '<box-icon name="show" color="#ffffff"></box-icon>';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.innerHTML = '<box-icon name="hide" color="#ffffff"></box-icon>';
+            }
+        }
+
+        /* Sends a form to recover the password */
+        function recover_password(recoverForm){
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "GET",
+                url: "{% url 'history' %}",
+                data: $(recoverForm).serialize() + "&currentPage=" + currentPage, 
+                success: function(response) {
+                    $('#historyContainer').html($(response.history_list_html));
+                    $('#paginationContainer').html($(response.pagination_html));
+                    openModal('recover_item_alert');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Sends a form to delete the password */
+        function delete_password(deleteForm) {
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "GET",
+                url: "{% url 'history' %}",
+                data: $(deleteForm).serialize() + "&currentPage=" + currentPage, 
+                success: function(response) {
+                    $('#historyContainer').html($(response.history_list_html));
+                    $('#paginationContainer').html($(response.pagination_html));
+                    openModal('delete_item_alert');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Sends a form to recover the note */
+        function recover_note(recoverForm){
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "GET",
+                url: "{% url 'history' %}",
+                data: $(recoverForm).serialize() + "&currentPage=" + currentPage, 
+                success: function(response) {
+                    $('#historyContainer').html($(response.history_list_html));
+                    $('#paginationContainer').html($(response.pagination_html));
+                    openModal('recover_item_alert');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Sends a form to delete the note */
+        function delete_note(deleteForm) {
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "GET",
+                url: "{% url 'history' %}",
+                data: $(deleteForm).serialize() + "&currentPage=" + currentPage, 
+                success: function(response) {
+                    $('#historyContainer').html($(response.history_list_html));
+                    $('#paginationContainer').html($(response.pagination_html));
+                    openModal('delete_item_alert');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Sends a form to recover the card */
+        function recover_card(recoverForm){
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "GET",
+                url: "{% url 'history' %}",
+                data: $(recoverForm).serialize() + "&currentPage=" + currentPage, 
+                success: function(response) {
+                    $('#historyContainer').html($(response.history_list_html));
+                    $('#paginationContainer').html($(response.pagination_html));
+                    openModal('recover_item_alert');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Sends a form to delete the card */
+        function delete_card(deleteForm) {
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "GET",
+                url: "{% url 'history' %}",
+                data: $(deleteForm).serialize() + "&currentPage=" + currentPage, 
+                success: function(response) {
+                    $('#historyContainer').html($(response.history_list_html));
+                    $('#paginationContainer').html($(response.pagination_html));
+                    openModal('delete_item_alert');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Updates the history list based on page number */
+        function page_update(pagination_button) {
+            var page = $(pagination_button).attr("href").split("=")[1];
+            $.ajax({
+                type: "GET",
+                url: "{% url 'history' %}",
+                data: {'page': page, 'form_type': 'page_updateForm'}, 
+                success: function(response) {
+                    $('#historyContainer').html($(response.history_list_html));
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'history' %}",
+                        data: {'page': page, 'form_type': 'paginationForm'}, 
+                        success: function(response) {
+                            $('#paginationContainer').html($(response.pagination_html));
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error updating pagination:", status, error);
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating pagination:", status, error);
+                }
+            });
+        }
+
+        /* Opening modal */
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('is-active');
+            }
+        }
+        
+        /* Closing modal */
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('is-active');
+            }
+        }
+
+        /* Toggling dropdowns */
+        document.addEventListener('DOMContentLoaded', () => {
+            const navDropdown = document.getElementById('dropdown');
+            const searchBar = document.getElementById('search_bar');
+            const type_dropdown = document.getElementById('type_dropdown');
+
+            navDropdown.addEventListener('click', () => {
+                navDropdown.classList.toggle('is-active');
+            });
+            
+            /* Sends a form with the search term to update the displayed passwords */
+            searchBar.addEventListener("keypress", function(event) {
+                if (event.key == "Enter") {
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'history' %}",
+                        data: {'form_type': 'searchForm', 'search_term':searchBar.value, 'search_type':type_dropdown.value}, 
+                        success: function(response) {
+                            $('#historyContainer').html($(response.history_list_html));
+                            $('#paginationContainer').html($(response.pagination_html));
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error updating page:", status, error);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

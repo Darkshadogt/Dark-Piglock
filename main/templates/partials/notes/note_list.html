@@ -1,0 +1,110 @@
+{% load static %}
+{% load widget_tweaks %}
+<!--Looping through each note the user created-->
+{% if user_notes %}
+    {% for note, editForm in user_notes %}
+        <div class="column is-3" style="margin-top: 10px; margin-left: 65px;">
+            <div class="box has-background-black" style="height: 150px; border-radius: 10px;">
+                <div class="has-text-weight-bold" style="color:white; font-size: 20px; margin-top: 40px; margin-left: 100px;">{{ note.title }}</div>
+                <img src="{% static 'pig_note.png' %}" style="margin-left: 10px; margin-top: -50px;">
+                <!--Creates a dropdown for the settings menu-->
+                <div class="dropdown" style="margin-top: 40px;">
+                    <div class="dropdown-trigger">
+                        <button class="button" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -130px; margin-left: 182.5px;">
+                            <span class="icon" style="font-size: 20px;">
+                                <box-icon name='chevron-down' color='#ffffff' size='lg'></box-icon>
+                            </span>
+                        </button>
+                    </div>
+                    <!--Settings menu for each note-->
+                    <div class="dropdown-menu" style="margin-top: -140px; margin-left: 180px;">
+                        <div class="dropdown-content">
+                            <a class="dropdown-item is-family-monospace" onclick="openModal('view_note_modal_{{ note.id }}')">
+                                View
+                            </a>
+                            <a class="dropdown-item is-family-monospace" onclick="openModal('edit_note_modal_{{ note.id }}')">
+                                Edit
+                            </a>
+                            <a class="dropdown-item is-family-monospace" onclick="delete_note('{{ note.id }}')">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--View Note Modal-->
+        <div class="modal" id="view_note_modal_{{ note.id }}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="modal-background"></div>
+            <div class="modal-content has-text-white is-family-monospace">
+                <div class="field" style="margin-top: 20px;">
+                    <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">{{ note.title }}</p>
+                </div>
+                <div class="field">
+                    <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                        Description
+                    </label>
+                    <textarea class="input is-family-monospace" type="text" style="width: 400px; margin-top: 10px; margin-left: 50px; height: 400px" readonly>{{ note.get_content }}</textarea>
+                </div>
+            </div>
+            <button class="modal-close is-large" type="button" onclick="closeModal('view_note_modal_{{ note.id }}')"></button>
+        </div>
+        <!--Edit Note Modal-->
+        <div class="modal" id="edit_note_modal_{{ note.id }}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="modal-background"></div>
+            <div class="modal-content has-text-white is-family-monospace">
+                <div id="edit_note_form_container_{{ note.id }}">
+                    <form method="post" action="{% url 'notes' %}" onsubmit="event.preventDefault(); edit_note(this);">
+                        {% csrf_token %}
+                        <input type="hidden" value="editNoteForm" name="form_type">
+                        <input type="hidden" value="{{ note.id }}" name="note_id">
+                        <div class="field" style="margin-top: 30px;">
+                            <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Edit Note</p>
+                        </div>
+                        {% if editForm.errors %}
+                            <div class="notification" style="width: 400px; margin-left: 50px; margin-top: 20px;" id="edit_note_modal_notification_{{ note.id }}">
+                                <button class="delete" type="button" onclick="closeNotification('{{ note.id }}')"></button>
+                                <strong style="color: black; font-size: 18px;">Error:</strong>
+                                <ul class="has-text-weight-light" style="color: black; font-size: 15px;">
+                                    {% for error_list in editForm.errors.values %}
+                                        {% for error in error_list %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Title
+                            </label>
+                            <div class="control">
+                                {% render_field editForm.title value=note.title %}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Description
+                            </label>
+                            <div class="control">
+                                <textarea class="input is-family-monospace" type="text" style="width: 400px; margin-top: 10px; margin-left: 50px; height: 400px" name="editForm_content">{{ note.get_content }}</textarea>
+                            </div>
+                        </div>
+                        <div class="field is-grouped-centered is-grouped">
+                            <div class="control">
+                                <button class="button is-family-monospace" type="reset" onclick="closeModal('edit_note_modal_{{ note.id }}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                Cancel
+                                </button>
+                            </div>
+                            <div class="control">
+                                <button class="button is-family-monospace" type="submit" onclick="closeModal('edit_note_modal_{{ note.id }}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load django_simple_bulma %}
+    {% load widget_tweaks %}
+    {% bulma %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Piglock</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <!--Loads the css file containing the styling for notes page-->
+    <link rel="stylesheet" href="{% static 'css/notes.css' %}">
+</head>
+<!--Hides the scrollbar-->
+<body style="overflow-x: hidden;">
+    <!--Loads Boxicon and JQuery Package-->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <div class="tile is-ancestor is-2">
+        <!--Side Menu-->
+        <aside class="menu mt-3 ml-3 side_menu">
+            <div class="is-flex is-flex-direction-row is-align-items-center mt-2 ml-2">
+                <img class="mt-2 ml-2" src="{% static 'pig_icon.png' %}" width="40" height="100">
+                <span class="logo-name has-text-weight-bold is-family-monospace has-text-white ml-2 mt-2">Dark Piglock</span>
+            </div>
+            <p class="menu-label has-text-white is-family-monospace mt-5 ml-2">General</p>
+            <ul class="menu-list menulist mt-5 ml-2">
+                <li>
+                    <a class="icon-text is-family-monospace has-text-white is-family-monospace is-flex is-align-items-center" href="/dashboard/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='dashboard' type='solid' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/passwords/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='lock' type='solid' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Passwords</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/notes/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='edit' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Notes</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/cards/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='credit-card' type='solid' color='#ffffff' ></box-icon>
+                            </span>
+                        <span class="mt-2">Credit Cards</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/history/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='history' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">History</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/settings/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='cog' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <p class="menu-label has-text-white is-family-monospace mt-5 ml-2">Tools</p>
+            <ul class="menu-list menulist mt-5 ml-2">
+                <li>
+                    <a class="icon-text has-text-white is-family-monospace is-flex is-align-items-center" href="/password-generator/">
+                        <span class="icon mt-2 mr-3">
+                            <box-icon name='refresh' color='#ffffff' ></box-icon>
+                        </span>
+                        <span class="mt-2">Password Generator</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+        </div>
+    </div>
+    <div class="main_content">
+        <!--Navigation Bar-->
+        <nav class="navbar custom_navbar is-fixed-top">
+            <div class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item has-dropdown" id="dropdown">
+                        <a class="navbar-link is-family-monospace">{{ username }}</a>
+                        <div class="navbar-dropdown custom_dropdown">
+                            <a class="navbar-item is-family-monospace" onclick="openModal('credits')">
+                                Credits
+                            </a>
+                            <a class="navbar-item is-family-monospace" href="{% url 'logout' %}">
+                                Log Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!--Attribution Modal-->
+        <div class="modal" id="credits" style="width: 400px; height: 450px; position: fixed; top: 55%; left: 55%; transform: translate(-50%, -50%); z-index: 5;">
+            <div class="modal-background"></div>
+            <div class="modal-content" style="background-color: black; text-align: center; margin-top: 30px;">
+                <h1 style="color: white; font-family: monospace; font-size: 20px; margin-bottom: 20px;">Credits</h1>
+                <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852122.htm#query=dark%20theme%20vector%20background&position=8&from_view=search&track=ais&uuid=5fa2d0fc-99ae-437f-a630-cc21610266c7" style="color: white; font-family: monospace; text-decoration: underline;">Login Page and Sign Up Page Background Image by Freepik</a>
+                <br>
+                <a href="https://www.freepik.com/free-vector/background-luxury-minimalist-gradient-style-design_32582886.htm#page=2&query=dark%20vector%20background&position=30&from_view=search&track=ais&uuid=0b077dd1-421b-47da-a2d2-b748ddbd193a" style="color: white; font-family: monospace; text-decoration: underline;">Credit Card Background Image by arrandera</a>
+                <br>
+                <div style="font-family: monospace; color: white;"> Credit Card Chip Icon made by <a href="https://www.freepik.com" style="color: white; font-family: monospace; text-decoration: underline;" title="Freepik"> Freepik </a> from <a href="https://www.flaticon.com/" title="Flaticon" style="color: white; font-family: monospace; text-decoration: underline;">www.flaticon.com'</a></div>
+                <a href="https://www.freepik.com/icon/animal-rights_2865584#fromView=search&term=pig+lock&track=ais&page=1&position=31&uuid=3f7dfbf6-5dbb-4b17-812a-f2923c1652ca" style="color: white; font-family: monospace; text-decoration: underline;">Password Page Icon by Freepik</a>
+                <br>
+                <a href="https://icons8.com/icon/qudcNstH1hBC/pig" style="color: white; font-family: monospace; text-decoration: underline;">Website Pig Icon made by Vitaly Gorbachev on</a><a href="https://icons8.com/"style="color: white; font-family: monospace; text-decoration: underline;"> Icons8</a>
+                <br>
+                <a href="https://www.freepik.com/icon/book_6153987#fromView=search&term=pig+with+notebook&track=ais&page=1&position=17&uuid=06c214f7-3f84-4666-9a1f-06e42c4b8deb" style="color: white; font-family: monospace; text-decoration: underline;">Note Page Icon by Flowicon</a>
+                <br>
+                <div style="color: white; font-family: monospace;">Home Page Background Image by <a href="https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852128.htm#query=dark%20theme%20vector&position=12&from_view=search&track=ais&uuid=5c4ba701-a1f6-4f83-bbda-6470cbea0ae8" style="color: white; font-family: monospace; text-decoration: underline;">Freepik</a></div>
+                <a href="https://storyset.com/online" style="color: white; font-family: monospace; text-decoration: underline;">Home Page Illustration by Storyset</a>
+                <br>
+                <a href="https://www.freepik.com/icon/no-pork_9958719" style="color: white;  font-family: monospace; text-decoration: underline;">History Page Icon by Freepik</a>
+                <div class="field is-grouped-centered is-grouped" style="margin-top: 10px;">
+                    <div class="control">
+                        <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('credits')">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="columns is-multiline">
+            <div class="column top_column is-11">
+                <!--Header box-->
+                <div class="level">
+                    <div class="level-left">
+                        <div class="level-item ml-4 move_top">
+                            <div class="has-text-white is-family-monospace has-text-weight-bold">All Notes</div>
+                        </div>
+                        <div class="level-item">
+                            <div class="control has-icons-left mr-6 move_top" style="margin-left: 200px;">
+                                <!--If search_term is none, don't show anything in the search bar-->
+                                {% if search_term == None %}
+                                    <input class="input is-family-monospace" type="text" placeholder="Search" id="search_bar">
+                                {% else %}
+                                    <input class="input is-family-monospace" type="text" placeholder="Search" id="search_bar" value="{{ search_term }}">
+                                {% endif %}
+                                <span class="icon is-left ml-1">
+                                    <box-icon name='search' color='#ffffff'></box-icon>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="level-item" style="height: 10px; margin-top: -52px; margin-left: -40px;">
+                            <select class="type-dropdown is-family-monospace" style="height: 35px; border-radius: 5px; background-color: transparent; color: white; border-color: white;" id="type_dropdown">
+                                <option value="">Type</option>
+                                <option value="title">Title</option>
+                                <option value="content">Description</option>
+                            </select>
+                        </div>
+                        {% if search_type %}
+                            <script>
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    var type_dropdown = document.getElementById('type_dropdown');
+                                    type_dropdown.value = "{{ search_type }}";
+                                });
+                            </script>
+                        {% endif %}
+                    </div>
+                    <div class="level-right">
+                        <div class="level-item move_top">
+                            <button class="button add_note_button mr-4" onclick="openModal('add_note_modal')"> 
+                                <span class="icon">
+                                    <box-icon name='plus' color='#ffffff' ></box-icon>
+                                </span>
+                                <span class="is-family-monospace">Add New</span>
+                            </button>
+                            <!--Add note modal, including the add note form-->
+                            <div class="modal add_note_modal" id="add_note_modal">
+                                <div class="modal-background"></div>
+                                <div class="modal-content has-text-white is-family-monospace">
+                                    <div id="add_note_form_container">
+                                        <form method="post" action="{% url 'notes' %}" id="add_note_form" onsubmit="event.preventDefault(); add_note();">
+                                            {% csrf_token %}
+                                            <input type="hidden" value="addNoteForm" name="form_type">
+                                            <div class="field" style="margin-top: 30px;">
+                                                <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Add Note</p>
+                                            </div>
+                                            <!--If there are errors, display them-->
+                                            {% if addForm.errors %}
+                                                <div class="notification" style="width: 400px; margin-left: 50px; margin-top: 20px;">
+                                                    <button class="delete" type="button" onclick="this.parentElement.style.display='none'"></button>
+                                                    <strong style="color: black; font-size: 18px;">Error:</strong>
+                                                    <ul class="has-text-weight-light" style="color: black; font-size: 15px;">
+                                                        {% for error_list in addForm.errors.values %}
+                                                            {% for error in error_list %}
+                                                                <li>{{ error }}</li>
+                                                            {% endfor %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            {% endif %}
+                                            <!--Fields of the form-->
+                                            <div class="field">
+                                                <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                                    Title
+                                                </label>
+                                                <div class="control">
+                                                    {{ addForm.title }}
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                                    Description
+                                                </label>
+                                                <div class="control">
+                                                    {{ addForm.content }}
+                                                </div>
+                                            </div>
+                                            <div class="field is-grouped-centered is-grouped">
+                                                <div class="control">
+                                                    <button class="button is-family-monospace" type="reset" onclick="closeModal('add_note_modal')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                                    Cancel
+                                                    </button>
+                                                </div>
+                                                <div class="control">
+                                                    <button class="button is-family-monospace" type="submit" onclick="closeModal('add_note_modal')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                                        Add
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal" id="add_note_alert" style="width: 300px; height: 220px; position: fixed; top: 55%; left: 55%; transform: translate(-50%, -50%); background-color: black;">
+                                <div class="modal-background"></div>
+                                <div class="modal-content">
+                                    <p style="margin-top: 60px; color: white; font-family: monospace; text-align: center;">Note successfully added!</p>
+                                    <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                                        <div class="control">
+                                            <button class="button is-family-monospace" type="button" style="width: 100px; margin-top: 20px; background-color: transparent; color: white;" onclick="closeModal('add_note_alert')">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider"></div>
+            </div>
+        </div>
+        <div class="columns is-multiline" id="noteContainer">
+            <!--Looping through each note the user created-->
+            {% if user_notes %}
+                {% for note, editForm in user_notes %}
+                    <div class="column is-3" style="margin-top: 10px; margin-left: 65px;">
+                        <div class="box has-background-black" style="height: 150px; border-radius: 10px;">
+                            <div class="has-text-weight-bold" style="color:white; font-size: 20px; margin-top: 40px; margin-left: 100px;">{{ note.title }}</div>
+                            <img src="{% static 'pig_note.png' %}" style="margin-left: 10px; margin-top: -50px;">
+                            <!--Creates a dropdown for the settings menu-->
+                            <div class="dropdown" style="margin-top: 40px;">
+                                <div class="dropdown-trigger">
+                                    <button class="button" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -130px; margin-left: 182.5px;">
+                                        <span class="icon" style="font-size: 20px;">
+                                            <box-icon name='chevron-down' color='#ffffff' size='lg'></box-icon>
+                                        </span>
+                                    </button>
+                                </div>
+                                <!--Settings menu for each note-->
+                                <div class="dropdown-menu" style="margin-top: -140px; margin-left: 180px;">
+                                    <div class="dropdown-content">
+                                        <a class="dropdown-item is-family-monospace" onclick="openModal('view_note_modal_{{ note.id }}')">
+                                            View
+                                        </a>
+                                        <a class="dropdown-item is-family-monospace" onclick="openModal('edit_note_modal_{{ note.id }}')">
+                                            Edit
+                                        </a>
+                                        <a class="dropdown-item is-family-monospace" onclick="delete_note('{{ note.id }}')">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--View Note Modal-->
+                    <div class="modal" id="view_note_modal_{{ note.id }}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <div class="modal-background"></div>
+                        <div class="modal-content has-text-white is-family-monospace">
+                            <div class="field" style="margin-top: 20px;">
+                                <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">{{ note.title }}</p>
+                            </div>
+                            <div class="field">
+                                <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                    Description
+                                </label>
+                                <textarea class="input is-family-monospace" type="text" style="width: 400px; margin-top: 10px; margin-left: 50px; height: 400px" readonly>{{ note.get_content }}</textarea>
+                            </div>
+                        </div>
+                        <button class="modal-close is-large" type="button" onclick="closeModal('view_note_modal_{{ note.id }}')"></button>
+                    </div>
+                    <!--Edit Note Modal-->
+                    <div class="modal" id="edit_note_modal_{{ note.id }}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <div class="modal-background"></div>
+                        <div class="modal-content has-text-white is-family-monospace">
+                            <div id="edit_note_form_container_{{ note.id }}">
+                                <form method="post" action="{% url 'notes' %}" onsubmit="event.preventDefault(); edit_note(this);">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="editNoteForm" name="form_type">
+                                    <input type="hidden" value="{{ note.id }}" name="note_id">
+                                    <div class="field" style="margin-top: 30px;">
+                                        <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Edit Note</p>
+                                    </div>
+                                    {% if editForm.errors %}
+                                        <div class="notification" style="width: 400px; margin-left: 50px; margin-top: 20px;" id="edit_note_modal_notification_{{ note.id }}">
+                                            <button class="delete" type="button" onclick="closeNotification('{{ note.id }}')"></button>
+                                            <strong style="color: black; font-size: 18px;">Error:</strong>
+                                            <ul class="has-text-weight-light" style="color: black; font-size: 15px;">
+                                                {% for error_list in editForm.errors.values %}
+                                                    {% for error in error_list %}
+                                                        <li>{{ error }}</li>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Title
+                                        </label>
+                                        <div class="control">
+                                            {% render_field editForm.title value=note.title %}
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                            Description
+                                        </label>
+                                        <div class="control">
+                                            <textarea class="input is-family-monospace" type="text" style="width: 400px; margin-top: 10px; margin-left: 50px; height: 400px" name="editForm_content">{{ note.get_content }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="field is-grouped-centered is-grouped">
+                                        <div class="control">
+                                            <button class="button is-family-monospace" type="reset" onclick="closeModal('edit_note_modal_{{ note.id }}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                            Cancel
+                                            </button>
+                                        </div>
+                                        <div class="control">
+                                            <button class="button is-family-monospace" type="submit" onclick="closeModal('edit_note_modal_{{ note.id }}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                                Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <!--Pagination below the page-->
+        <div id="paginationContainer">
+            {% if user_notes %}
+                <nav class="pagination is-centered">
+                    {% if user_notes.has_previous %}
+                        <a href="?page={{ user_notes.previous_page_number }}" onclick="event.preventDefault(); page_update(this);" class="pagination-previous">
+                            <box-icon name='chevron-left' color='#ffffff' ></box-icon>
+                        </a>
+                    {% else %}
+                        <a class="pagination-previous is-disabled">
+                            <box-icon name='chevron-left' color='#ffffff' ></box-icon>
+                        </a>
+                    {% endif %}
+                
+                    <ul class="pagination-list" >
+                        {% for i in user_notes.paginator.page_range %}
+                            {% if user_notes.number == i %}
+                                <li>
+                                    <span class="pagination-link is-current has-text-white">{{ i }}</span>
+                                </li>
+                            {% elif i > user_notes.number|add:"-3" and i < user_notes.number|add:"3" %}
+                                <li>
+                                    <a href="?page={{ i }}" onclick="event.preventDefault(); page_update(this);" class="pagination-link has-text-white">{{ i }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                
+                    {% if user_notes.has_next %}
+                        <a href="?page={{ user_note.next_page_number }}" onclick="event.preventDefault(); page_update(this);" class="pagination-next">
+                            <box-icon name='chevron-right' color='#ffffff' ></box-icon>
+                        </a>
+                    {% else %}
+                        <a class="pagination-next is-disabled">
+                            <box-icon name='chevron-right' color='#ffffff' ></box-icon>
+                        </a>
+                    {% endif %}
+                </nav>
+            {% endif %}
+        </div>
+        <script>
+            /* Opening modal */
+            function openModal(id) {
+                const modal = document.getElementById(id);
+                if (modal) {
+                    modal.classList.add('is-active');
+                }
+            }
+
+            /* Closing modal */
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.remove('is-active');
+            }
+        }
+
+        /* Closing edit form notification */
+        function closeNotification(id){
+            const notification = document.getElementById("edit_note_modal_notification_" + id);
+            if (notification) {
+                notification.remove();
+            }
+        }
+
+        /* Adds note to page */
+        function add_note() {
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "POST",
+                url: "{% url 'notes' %}?page=" + currentPage,
+                data: $('#add_note_form').serialize(),
+                success: function(response) {
+                    /* If form does not have error, update the pagination */
+                    if (response.status == "success") {
+                        $('#noteContainer').html($(response.note_list_html));
+                        $('#add_note_form_container').html($(response.add_note_form_html));
+                        $.ajax({
+                            type: "GET",
+                            url: "{% url 'notes' %}",
+                            data: { 'page': response.page, 'form_type': 'paginationForm'}, 
+                            success: function(response) {
+                                $('#paginationContainer').html($(response.pagination_html));
+                                openModal("add_note_modal");
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error updating pagination:", status, error);
+                            }
+                        });
+                    /* If form has error, open the modal */
+                    } else {
+                        $('#add_note_form_container').html($(response.add_note_form_html));
+                        openModal("add_note_modal");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error adding note:", status, error);
+                }
+            });
+        }
+
+        /* Edits the note information */
+        function edit_note(editForm) {
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "POST",
+                url: "{% url 'notes' %}",
+                data: $(editForm).serialize() + "&currentPage=" + currentPage, 
+                success: function(response) {
+                    /* If the form doesn't have error, update current page */
+                    if (response.status == "success") {
+                        $('#noteContainer').html($(response.note_list_html));
+                    
+                    /* If form has error, open the modal*/
+                    } else {
+                        $('#edit_note_form_container_' + response.note_id).html($(response.edit_note_form_html));
+                        openModal("edit_note_modal_" + response.note_id);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Sends a form with the id to delete the note */
+        function delete_note(id){
+            var currentPage = $('#paginationContainer .pagination-link.is-current').text();
+            $.ajax({
+                type: "GET",
+                url: "{% url 'notes' %}",
+                data: {'form_type': 'deleteNoteForm', 'note_to_delete_id':id, 'currentPage':currentPage}, 
+                success: function(response) {
+                    $('#noteContainer').html($(response.note_list_html));
+                    $('#paginationContainer').html($(response.pagination_html))
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Updates the note list based on page number */
+        function page_update(pagination_button) {
+            var page = $(pagination_button).attr("href").split("=")[1];
+            $.ajax({
+                type: "GET",
+                url: "{% url 'notes' %}",
+                data: {'page': page, 'form_type': 'page_updateForm'}, 
+                success: function(response) {
+                    $('#noteContainer').html($(response.note_list_html));
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'notes' %}",
+                        data: {'page': page, 'form_type': 'paginationForm'}, 
+                        success: function(response) {
+                            $('#paginationContainer').html($(response.pagination_html));
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error updating pagination:", status, error);
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating pagination:", status, error);
+                }
+            });
+        }
+
+         /* Toggling dropdowns */
+         document.addEventListener('DOMContentLoaded', () => {
+            const navDropdown = document.getElementById('dropdown');
+            const noteContainer = document.getElementById('noteContainer');
+            const searchBar = document.getElementById('search_bar');
+            const type_dropdown = document.getElementById('type_dropdown');
+
+            navDropdown.addEventListener('click', () => {
+                navDropdown.classList.toggle('is-active');
+            });
+            
+            noteContainer.addEventListener('click', (event) => {
+                const targetDropdown = event.target.closest('.dropdown');
+                
+                if (targetDropdown) {
+                    targetDropdown.classList.toggle('is-active');
+                }
+            });
+
+            /* Sends a form with the search term to update the displayed notes */
+            searchBar.addEventListener("keypress", function(event) {
+                if (event.key == "Enter") {
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'notes' %}",
+                        data: {'form_type': 'searchForm', 'search_term':searchBar.value, 'search_type':type_dropdown.value}, 
+                        success: function(response) {
+                            $('#noteContainer').html($(response.note_list_html));
+                            $('#paginationContainer').html($(response.pagination_html))
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error updating page:", status, error);
+                        }
+                    });
+                }
+            });
+        });
+        </script>
+    </body>
+</html>

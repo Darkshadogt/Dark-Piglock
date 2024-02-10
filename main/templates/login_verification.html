@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load django_simple_bulma %}
+    {% bulma %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Piglock</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <!--Loads the css file containing styling for verification page -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <style>
+        /* Setting the background image */
+        body {
+            background: url('{% static "dark_background.jpeg" %}') no-repeat center center fixed;
+            background-size:cover;
+            height:700px;
+        }
+    </style>
+</head>
+
+<!--Navigation bar-->
+<nav class="navbar is-fixed-top is-spaced transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item">
+            <div class="is-flex is-flex-direction-row is-align-items-center mt-2 ml-2">
+                <img class="mt-2 ml-2" src="{% static 'pig_icon.png' %}" width="40" height="100">
+                <span class="logo-name has-text-weight-bold is-family-monospace has-text-white ml-2 mt-2">Dark Piglock</span>
+            </div>
+        </a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <a class="navbar-item">
+                <a class="button is-family-monospace is-ghost is-light is-inverted has-text-weight-bold" href="/login/">
+                    Log In
+                </a>
+            </a>
+            <a class="navbar-item">
+                <a class="button is-family-monospace is-ghost is-inverted is-light has-text-weight-bold" href="/signup/">
+                    Sign Up
+                </a>
+            </a>
+        </div>
+    </div>      
+</nav>
+<body>
+    <!--Loads Boxicon and JQuery Package-->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <section class="section is-centered is-medium">
+        <div class="columns is-centered">
+            <div class="column is-two-fifths">
+                <div id="verificationForm_container">
+                    <form class="box transparent" onsubmit="event.preventDefault(); check_code();" id="verificationForm">
+                        <div class="field" style="margin-top: 50px;">
+                            <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Two Factor Authentication</p>
+                        </div>
+                        <!--Display errors, if found-->
+                        {% if error %}
+                            <div class="notification" id="verificationForm_notification">
+                                <button class="delete" aria-label="delete" onclick="event.preventDefault('verificationForm_notification'); closeNotification();"></button>
+                                <ul>
+                                    {{ error }}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <input type="hidden" value="verificationForm" name="form_type">
+                        <!--Form fields-->
+                        <div class="field" style="margin-top: 30px;">
+                            <div class="control">
+                                <input class="input is-family-monospace" placeholder="Enter the 6 digit code" name="verification_code">
+                            </div>
+                            <a style="color: white; font-size: 12px; font-family: monospace; float: right; margin-top: 20px;" onclick="event.preventDefault(); resend_code();">Resend Code?</a>
+                        </div>
+                        <div class="field" style="text-align:center; margin-top: 60px;">
+                            <div class="control">
+                                <button class="button is-family-monospace has-text-weight-bold" type="submit">
+                                    Verify
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        /* Closing the form notification */
+        function closeNotification(id){
+            const notification = document.getElementById(id);
+            if (notification) {
+                notification.remove();
+            }
+        }
+        /* Checks the verification code */
+        function check_code() {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'verify_login' user_id=0 %}".replace("0", '{{ user_id }}'),
+                data: $('#verificationForm').serialize(),
+                success: function(response) {
+                    if (response.status == 'success') {
+                        window.location.href = "{% url 'dashboard' %}";
+                    } else {
+                        $('#verificationForm_container').html($(response.verification_form_html));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+
+        /* Resend another verification code */
+        function resend_code() {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'verify_login' user_id=0 %}".replace("0", '{{ user_id }}'),
+                data: {'form_type': 'resendCodeForm'},
+                success: function(response) {
+                    $('#verificationForm_container').html($(response.verification_form_html));
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

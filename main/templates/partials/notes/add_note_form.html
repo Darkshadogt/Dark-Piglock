@@ -1,0 +1,50 @@
+<form method="post" action="{% url 'notes' %}" id="add_note_form" onsubmit="event.preventDefault(); add_note();">
+    {% csrf_token %}
+    <input type="hidden" value="addNoteForm" name="form_type">
+    <div class="field" style="margin-top: 30px;">
+        <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Add Note</p>
+    </div>
+    <!--If there are errors, display them-->
+    {% if addForm.errors %}
+        <div class="notification" style="width: 400px; margin-left: 50px; margin-top: 20px;">
+            <button class="delete" type="button" onclick="this.parentElement.style.display='none'"></button>
+            <strong style="color: black; font-size: 18px;">Error:</strong>
+            <ul class="has-text-weight-light" style="color: black; font-size: 15px;">
+                {% for error_list in addForm.errors.values %}
+                    {% for error in error_list %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <!--Fields of the form-->
+    <div class="field">
+        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+            Title
+        </label>
+        <div class="control">
+            {{ addForm.title }}
+        </div>
+    </div>
+    <div class="field">
+        <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+            Description
+        </label>
+        <div class="control">
+            {{ addForm.content }}
+        </div>
+    </div>
+    <div class="field is-grouped-centered is-grouped">
+        <div class="control">
+            <button class="button is-family-monospace" type="reset" onclick="closeModal('add_note_modal')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+            Cancel
+            </button>
+        </div>
+        <div class="control">
+            <button class="button is-family-monospace" type="submit" onclick="closeModal('add_note_modal')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                Add
+            </button>
+        </div>
+    </div>
+</form>

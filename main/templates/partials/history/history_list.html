@@ -1,0 +1,236 @@
+{% load static %}
+{% if deletedItems %}
+    {% for item in deletedItems %}
+        <div class="list-item box">
+            <div class="list-item-image">
+                <img class="is-rounded" src="{% static 'pig_deleted.png' %}">
+            </div>
+            {% if item.get_model_name == "password" %}
+                <div class="list-item-content">
+                    <div class="list-item-title is-family-monospace" style="color: white; font-weight: normal;">{{ item.website_name }}</div>
+                    <div class="list-item-description is-family-monospace" style="color: white; font-weight: lighter; font-size: medium;">Password</div>
+                </div>
+                <div class="list-item-controls">
+                    <div class="buttons is-right">
+                        <button class="button" onclick="openModal('view_password_modal_{{ item.id }}')">
+                            <span class="icon is-small">
+                                <box-icon name='show' color='#ffffff'></box-icon>
+                            </span>
+                            <span class="is-family-monospace">View</span>
+                        </button>
+                        <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); recover_password(this);">
+                            <input type="hidden" name="form_type" value="recoveryForm">
+                            <input type="hidden" name="item_type" value="password">
+                            <input type="hidden" name="password_id" value="{{ item.id }}">
+                            <button type="submit" class="button">
+                                <span class="icon is-small">
+                                    <box-icon name='revision' color='#ffffff'></box-icon>
+                                </span>
+                                <span class="is-family-monospace">Recover</span>
+                            </button>
+                        </form>
+                        <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); delete_password(this)";>
+                            <input type="hidden" name="form_type" value="deletionForm">
+                            <input type="hidden" name="item_type" value="password">
+                            <input type="hidden" name="password_id" value="{{ item.id }}">
+                            <button type="submit" class="button">
+                                <span class="icon is-small">
+                                    <box-icon name='trash' color='#ffffff'></box-icon>
+                                </span>
+                                <span class="is-family-monospace">Delete</span>
+                            </button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+                <!--View password modal-->
+                <div class="modal" id="view_password_modal_{{ item.id }}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <div class="modal-background"></div>
+                    <div class="modal-content has-text-white is-family-monospace">
+                        <div class="field" style="margin-top: 20px;">
+                            <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">{{ item.website_name }}</p>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Username
+                            </label>
+                            <input class="input is-family-monospace" type="text" value="{{ item.get_username }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Password
+                            </label>
+                            <input id="view_password_modal_{{ item.id }}_password" class="input is-family-monospace" type="password" value="{{ item.get_password }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                            <button class="button" type="button" onclick="view_toggle_password('{{ item.id }}')" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -26px; margin-left: -330px;">
+                                <span class="icon" id="view_password_modal_{{ item.id }}_icon" style="font-size: 15px;">
+                                    <box-icon name='hide' color='#ffffff'></box-icon>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Email
+                            </label>
+                            <input class="input is-family-monospace" type="text"  value="{{ item.get_email }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Website Link
+                            </label>
+                            <input class="input is-family-monospace" type="text" value="{{ item.website_url }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Short Description
+                            </label>
+                            <input class="input is-family-monospace" type="text" value="{{ item.short_description }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                        </div>
+                        <div class="field" style="width: 400px;">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Detailed Description
+                            </label>
+                            <textarea class="textarea is-family-monospace" type="text" style="margin-top: 10px; margin-left: 50px; background-color: transparent;" readonly>{{ item.detailed_description }}</textarea>
+                        </div>
+                    </div>
+                    <button class="modal-close is-large" type="button" onclick="closeModal('view_password_modal_{{ item.id }}')"></button>
+                </div>
+            {% elif item.get_model_name == "note" %}
+                <div class="list-item-content">
+                    <div class="list-item-title is-family-monospace" style="color: white; font-weight: normal;">{{ item.title }}</div>
+                    <div class="list-item-description is-family-monospace" style="color: white; font-weight: lighter; font-size: medium;">Note</div>
+                </div>
+                <div class="list-item-controls">
+                    <div class="buttons is-right">
+                        <button class="button" onclick="openModal('view_note_modal_{{ item.id }}')">
+                            <span class="icon is-small">
+                                <box-icon name='show' color='#ffffff'></box-icon>
+                            </span>
+                            <span class="is-family-monospace">View</span>
+                        </button>
+                        <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); recover_note(this);">
+                            <input type="hidden" name="form_type" value="recoveryForm">
+                            <input type="hidden" name="item_type" value="note">
+                            <input type="hidden" name="note_id" value="{{ item.id }}">
+                            <button type="submit" class="button">
+                                <span class="icon is-small">
+                                    <box-icon name='revision' color='#ffffff'></box-icon>
+                                </span>
+                                <span class="is-family-monospace">Recover</span>
+                            </button>
+                        </form>
+                        <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); delete_note(this);">
+                            <input type="hidden" name="form_type" value="deletionForm">
+                            <input type="hidden" name="item_type" value="note">
+                            <input type="hidden" name="note_id" value="{{ item.id }}">
+                            <button type="submit" class="button">
+                                <span class="icon is-small">
+                                    <box-icon name='trash' color='#ffffff'></box-icon>
+                                </span>
+                                <span class="is-family-monospace">Delete</span>
+                            </button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+                <!--View Note Modal-->
+                <div class="modal" id="view_note_modal_{{ item.id }}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <div class="modal-background"></div>
+                    <div class="modal-content has-text-white is-family-monospace">
+                        <div class="field" style="margin-top: 20px;">
+                            <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">{{ item.title }}</p>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Description
+                            </label>
+                            <textarea class="input is-family-monospace" type="text" style="width: 400px; margin-top: 10px; margin-left: 50px; height: 400px" readonly>{{ item.get_content }}</textarea>
+                        </div>
+                    </div>
+                    <button class="modal-close is-large" type="button" onclick="closeModal('view_note_modal_{{ item.id }}')"></button>
+                </div>
+            {% else %}
+                <div class="list-item-content">
+                    <div class="list-item-title is-family-monospace" style="color: white; font-weight: normal;">{{ item.get_card_number }}</div>
+                    <div class="list-item-description is-family-monospace" style="color: white; font-weight: lighter; font-size: medium;">Card</div>
+                </div>
+                <div class="list-item-controls">
+                    <div class="buttons is-right">
+                        <button class="button" onclick="openModal('view_card_modal_{{ item.id }}')">
+                            <span class="icon is-small">
+                                <box-icon name='show' color='#ffffff'></box-icon>
+                            </span>
+                            <span class="is-family-monospace">View</span>
+                        </button>
+                        <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); recover_card(this);">
+                            <input type="hidden" name="form_type" value="recoveryForm">
+                            <input type="hidden" name="item_type" value="card">
+                            <input type="hidden" name="card_id" value="{{ item.id }}">
+                            <button type="submit" class="button">
+                                <span class="icon is-small">
+                                    <box-icon name='revision' color='#ffffff'></box-icon>
+                                </span>
+                                <span class="is-family-monospace">Recover</span>
+                            </button>
+                        </form>
+                        <form method="get" action="{% url 'history' %}" onsubmit="event.preventDefault(); delete_card(this);">
+                            <input type="hidden" name="form_type" value="deletionForm">
+                            <input type="hidden" name="item_type" value="card">
+                            <input type="hidden" name="card_id" value="{{ item.id }}">
+                            <button type="submit" class="button">
+                                <span class="icon is-small">
+                                    <box-icon name='trash' color='#ffffff'></box-icon>
+                                </span>
+                                <span class="is-family-monospace">Delete</span>
+                            </button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+                <!--View Card Modal-->
+                <div class="modal" id="view_card_modal_{{ item.id }}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <div class="modal-background"></div>
+                    <div class="modal-content has-text-white is-family-monospace">
+                        <div class="field" style="margin-top: 30px;">
+                            <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">{{ item.card_type }}</p>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                                Card Brand
+                            </label>
+                            <input class="input is-family-monospace" type="text" value="{{ item.card_brand }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                                Cardholder Name
+                            </label>
+                            <input class="input is-family-monospace" type="text" value="{{ item.get_cardholder_name }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                                Card Number
+                            </label>
+                            <input class="input is-family-monospace" type="text"  value="{{ item.get_card_number }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                                Security Code
+                            </label>
+                            <input id="view_card_modal_{{ item.id }}_cvv" class="input is-family-monospace" type="text"  value="{{ item.get_cvv }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                            <button class="button" type="button" onclick="view_toggle_cvv('{{ item.id }}')" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -72.5px; margin-left: 175px;">
+                                <span class="icon" id="view_card_modal_{{ item.id }}_icon" style="font-size: 15px;">
+                                    <box-icon name='hide' color='#ffffff'></box-icon>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="field" style="margin-top: -20px;">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                                Expiration Date
+                            </label>
+                            <input class="input is-family-monospace" type="text"  value="{{ item.get_expiration_date }}" style="width: 400px; margin-top: 10px; margin-left: 50px;" readonly>
+                        </div>
+                    </div>
+                    <button class="modal-close is-large" type="button" onclick="closeModal('view_card_modal_{{ item.id }}')"></button>
+                </div>
+            {% endif %}
+    {% endfor %}
+{% endif %}

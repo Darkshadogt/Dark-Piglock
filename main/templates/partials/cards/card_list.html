@@ -1,0 +1,185 @@
+{% load static %}
+{% load widget_tweaks %}
+<!--Looping through each card the user created-->
+{% if user_cards %}
+    {% for card, editForm in user_cards %}
+        <div class="column is-4" style="margin-top: 10px; margin-left: 110px; height: 250px;">
+            <div class="box" style="height: 300px; border-radius: 10px;">
+                <div class="box-inner" id="{{card.id}}_inner">
+                    <!--Front of the card-->
+                    <div class="front-box">
+                        <div class="field">
+                            <div style="color: white; font-size: 15px; text-transform: uppercase; font-family: 'Courier New', Courier, monospace; font-weight: bold;  margin-left: 5px; flex-direction:row;">{{ card.card_type }}</div>
+                            <!--Dropdown for each card-->
+                            <div class="dropdown" style="float: right; margin-top: -20px;">
+                                <div class="dropdown-trigger">
+                                    <button class="button"  onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none;">
+                                        <span class="icon" style="font-size: 20px;">
+                                            <box-icon name='chevron-down' color='#ffffff' size='lg'></box-icon>
+                                        </span>
+                                    </button>
+                                </div>
+                                <!--Settings menu for each card-->
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-content">
+                                        <a class="dropdown-item is-family-monospace" onclick="flipCard('{{card.id}}_inner')">
+                                            Flip
+                                        </a>
+                                        <a class="dropdown-item is-family-monospace" onclick="openModal('edit_card_modal_{{card.id}}')">
+                                            Edit
+                                        </a>
+                                        <a class="dropdown-item is-family-monospace" onclick="delete_card('{{card.id}}')">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="color: white; font-size: 15px; text-transform: uppercase; font-family: 'Courier New', Courier, monospace; font-weight: bold; float: right; margin-top: -22px;">{{ card.card_brand }}</div>
+                        </div>
+                        <img src=" {% static 'card_chip.png' %}" style="margin-top: 5px; margin-left: 5px;">
+                        <pre style="font-family: 'Courier New', Courier, monospace; color: white; font-size: 17px; background-color: transparent; margin-top: -10px; margin-left: -16px; font-weight: lighter;">{{ card.formatted_card_number }}</pre>
+                        <pre style="font-family: 'Courier New', Courier, monospace; color: white; font-size: 17px; margin-left: -15px; text-align: left; background-color: transparent; margin-top: -15px; font-weight: lighter; text-transform: uppercase;">{{ card.get_cardholder_name }}</pre>
+                        <div style="margin-top: -45px; text-align: right; margin-right: 10px; display: flex; justify-content: end;">
+                            <div class="field">
+                                <div style="font-family: 'Courier New', Courier, monospace; color: white; font-size: 8px;">VALID</div>
+                                <div style="font-family: 'Courier New', Courier, monospace; color: white; font-size: 8px;">THRU</div>
+                            </div>
+                            <div style="font-family: 'Courier New', Courier, monospace; color: white; font-size: 12px; text-align: right; font-weight: lighter; margin-top: 2.5px; margin-left: 10px;">{{ card.get_expiration_date }}</div>
+                        </div>
+                    </div>
+                    <!--Back of the card-->
+                    <div class="back-box">
+                        <div class="field" style="margin-top: 20px;">
+                            <!--Dropdown for each card-->
+                            <div class="dropdown" style="float: right; margin-top: -20px;">
+                                <div class="dropdown-trigger">
+                                    <button class="button"  onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none;">
+                                        <span class="icon" style="font-size: 20px;">
+                                            <box-icon name='chevron-down' color='#ffffff' size='lg'></box-icon>
+                                        </span>
+                                    </button>
+                                </div>
+                                <!--Settings menu for each card-->
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-content">
+                                        <a class="dropdown-item is-family-monospace" onclick="flipCard('{{card.id}}_inner')">
+                                            Flip
+                                        </a>
+                                        <a class="dropdown-item is-family-monospace" onclick="openModal('edit_card_modal_{{card.id}}')">
+                                            Edit
+                                        </a>
+                                        <a class="dropdown-item is-family-monospace" onclick="delete_card('{{card.id}}')">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 90px;">
+                            <span style="color: white; font-family: 'Courier New', Courier, monospace; font-size: 8px; text-transform: uppercase; margin-left: -10px;">Authorized Signature</span>
+                            <span style="color: white; font-family: 'Courier New', Courier, monospace; text-transform: uppercase; font-size: 8px; float: right; margin-top: 10px;">Not valid unless signed</span>
+                        </div>
+                        <div style="background-color: white; height: 32.5px; width: 330px; margin-left: -18px;"></div>
+                        <div style="text-align: right; color: black; font-family: 'Courier New', Courier, monospace; margin-top: -27.5px; font-style: italic;">{{ card.get_cvv }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Edit card modal, including the edit card form-->
+        <div class="modal" id="edit_card_modal_{{card.id}}" style="width: 500px; height: 500px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="modal-background"></div>
+            <div class="modal-content has-text-white is-family-monospace">
+                <div id="edit_card_form_container_{{ card.id }}">
+                    <form method="post" action="{% url 'cards' %}" onsubmit="event.preventDefault(); edit_card(this);">
+                        {% csrf_token %}
+                        <input type="hidden" value="editCardForm" name="form_type">
+                        <input type="hidden" value="{{ card.id }}" name="card_id">
+                        <div class="field" style="margin-top: 30px;">
+                            <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Edit Card</p>
+                        </div>
+                        <!--If there are errors, display them-->
+                        {% if editForm.errors %}
+                            <div class="notification" style="width: 400px; margin-left: 50px; margin-top: 20px;" id="edit_card_modal_notification_{{ card.id }}">
+                                <button class="delete" type="button" onclick="closeNotification('edit_card_modal_notification_{{ card.id }}')"></button>
+                                <strong style="color: black; font-size: 18px;">Error:</strong>
+                                <ul class="has-text-weight-light" style="color: black; font-size: 15px;">
+                                    {% for error_list in editForm.errors.values %}
+                                        {% for error in error_list %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <!--Fields of the form-->
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Card Brand
+                            </label>
+                            <div class="control">
+                                {% render_field editForm.card_brand value=card.card_brand %}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Type of Card
+                            </label>
+                            <div class="control">
+                                {% render_field editForm.card_type value=card.card_type %}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Cardholder Name
+                            </label>
+                            <div class="control">
+                                {% render_field editForm.cardholder_name value=card.get_cardholder_name %}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Card Number
+                            </label>
+                            <div class="control">
+                                {% render_field editForm.card_number value=card.get_card_number %}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 30px; margin-left: 50px;">
+                                Security Code
+                            </label>
+                            <div class="control">
+                                <input class="input is-family-monospace" style="width: 400px; margin-top: 10px; margin-left: 50px" value="{{ card.get_cvv }}" name="editForm_cvv" type="password" id="edit_card_modal_{{ card.id }}_password">
+                                <button class="button" type="button" onclick="edit_toggle_password('{{ card.id }}')" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top: -72.5px; margin-left: 175px;">
+                                    <span class="icon" id="{{card.id}}_icon" style="font-size: 15px;">
+                                        <box-icon name='hide' color='#ffffff' ></box-icon>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label is-family-monospace has-text-white" style="margin-top: 10px; margin-left: 50px;">
+                                Expiration Date
+                            </label>
+                            <div class="control">
+                                {% render_field editForm.expiration_date value=card.get_expiration_date %}
+                            </div>
+                        </div>
+                        <div class="field is-grouped-centered is-grouped" style="margin-top: 40px;">
+                            <div class="control">
+                                <button class="button is-family-monospace" type="reset" onclick="closeModal('edit_card_modal_{{card.id}}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                Cancel
+                                </button>
+                            </div>
+                            <div class="control">
+                                <button class="button is-family-monospace" type="submit" onclick="closeModal('edit_card_modal_{{card.id}}')" style="width: 120px; margin-top: 20px; background-color: transparent; color: white;">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}

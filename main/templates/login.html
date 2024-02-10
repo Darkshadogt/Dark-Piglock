@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load django_simple_bulma %}
+    {% bulma %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Piglock</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <!--Loads the css file containing styling for the log in page -->
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <style>
+        /* Setting the background image */
+        body {
+            background: url('{% static "dark_background.jpeg" %}') no-repeat center center fixed;
+            background-size:cover;
+            height:700px;
+        }
+    </style>
+</head>
+
+<!--Navigation bar-->
+<nav class="navbar is-fixed-top is-spaced transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item">
+            <div class="is-flex is-flex-direction-row is-align-items-center mt-2 ml-2">
+                <img class="mt-2 ml-2" src="{% static 'pig_icon.png' %}" width="40" height="100">
+                <span class="logo-name has-text-weight-bold is-family-monospace has-text-white ml-2 mt-2">Dark Piglock</span>
+            </div>
+        </a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <a class="navbar-item">
+                <a class="button is-family-monospace is-ghost is-light is-inverted has-text-weight-bold" href="/login/">
+                    Log In
+                </a>
+            </a>
+            <a class="navbar-item">
+                <a class="button is-family-monospace is-ghost is-inverted is-light has-text-weight-bold" href="/signup/">
+                    Sign Up
+                </a>
+            </a>
+        </div>
+    </div>      
+</nav>
+<body>
+    <!--Loads Boxicon and JQuery Package-->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <section class="section is-centered is-medium">
+        <div class="columns is-centered">
+            <div class="column is-two-fifths">
+                <div id="loginForm_container">
+                    <form class="box transparent" method="post" action="{% url 'login' %}" id="loginForm" onsubmit="event.preventDefault(); log_in();">
+                        {% csrf_token %}
+                        <div class="field">
+                            <p class="subtitle is-family-monospace has-text-centered is-size-4 has-text-weight-bold has-text-white">Welcome Back</p>
+                        </div>
+                        <!--Display errors, if found-->
+                        {% if form.errors %}
+                            <div class="notification">
+                                <button class="delete" aria-label="delete" onclick="this.parentElement.style.display='none'"></button>
+                                <strong>Error:</strong>
+                                <ul>
+                                    {% for error_list in form.errors.values %}
+                                        {% for error in error_list %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        <!--Form fields-->
+                        <div class="field" style="margin-top: 30px;">
+                            <label class="label is-family-monospace has-text-weight-bold has-text-white">
+                                Username
+                            </label>
+                            <div class="control">
+                                {{ form.username }}
+                            </div>
+                        </div>
+                        <div class="field" style="margin-top: 20px;">
+                            <label class="label is-family-monospace has-text-weight-bold has-text-white">
+                                Password
+                            </label>
+                            <div class="control">
+                                {{ form.password }}
+                                <button class="button" onclick="toggle_password()" onfocus="this.blur();" style="background-color: transparent; height: 10px; width: 10px; border: none; margin-top:-67.5px; margin-left: 80px;" type="button">
+                                    <span class="icon" id="passwordIcon" style="font-size: 15px;">
+                                        <box-icon name='hide' color='#ffffff' ></box-icon>
+                                    </span>
+                                </button>
+                            </div>
+                            <a style="color: white; font-size: 12px; font-family: monospace; float: right;" href="/reset/">Forgot Password?</a>
+                        </div>
+                        <div class="field" style="text-align:center; margin-top: 40px;">
+                            <div class="control">
+                                <button class="button is-family-monospace has-text-weight-bold" type="submit">
+                                    Log In
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        /* Toggles the visibility of the password field */
+        function toggle_password() {
+            var passwordInput = document.getElementById('passwordInput');
+            var passwordIcon = document.getElementById('passwordIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.innerHTML = '<box-icon name="show" color="#ffffff"></box-icon>';
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.innerHTML = '<box-icon name="hide" color="#ffffff"></box-icon>';
+            }
+        }
+
+        /* Submits the log in form */
+        function log_in() {
+            var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            $.ajax({
+                type: "POST",
+                url: "{% url 'login' %}",
+                data: $('#loginForm').serialize() + '&csrfmiddlewaretoken=' + csrftoken,
+                success: function(response) {
+                    if (response.status == 'success') {
+                        window.location.href = "{% url 'dashboard' %}";
+                    } else if (response.status == "verify") {
+                        window.location.href = "{% url 'verify_login' user_id=0 %}".replace("0", response.user_id);
+                    } else {
+                        $('#loginForm_container').html($(response.log_in_form_html));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating page:", status, error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
