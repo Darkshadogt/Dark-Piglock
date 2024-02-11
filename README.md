@@ -73,7 +73,7 @@ Now you can run the project using the following command:
 
 - Credit Card Background Image by [Arrandera on Freepik](https://www.freepik.com/free-vector/background-luxury-minimalist-gradient-style-design_32582886.htm#page=2&query=dark%20vector%20background&position=30&from_view=search&track=ais&uuid=0b077dd1-421b-47da-a2d2-b748ddbd193a)
 - Sign Up Page, Log In Page, Verification Page, Forgot Password Page Background Image by [Freepik](https://www.freepik.com/free-vector/gradient-black-background-with-wavy-lines_19852122.htm#query=dark%20theme%20vector%20background&position=8&from_view=search&track=ais&uuid=5fa2d0fc-99ae-437f-a630-cc21610266c7)
-- Credit Card Chip Icon by [Freepik on Flaticon]()
+- Credit Card Chip Icon by [Freepik on Flaticon](https://www.flaticon.com/free-icon/chip_9405771?term=credit+card+chip&page=1&position=20&origin=search&related_id=9405771)
 - Password Page Icon by [Freepik](https://www.freepik.com/icon/animal-rights_2865584#fromView=search&term=pig+lock&track=ais&page=1&position=31&uuid=3f7dfbf6-5dbb-4b17-812a-f2923c1652ca)
 - Favicon by [Vitaly Gorbachev on Icons8](https://icons8.com/icon/qudcNstH1hBC/pig)
 - Note Page Icon by [Flowicon on Freepik](https://www.freepik.com/icon/book_6153987#fromView=search&term=pig+with+notebook&track=ais&page=1&position=17&uuid=06c214f7-3f84-4666-9a1f-06e42c4b8deb)
