@@ -14,7 +14,13 @@
 
 # Dark Piglock
 
-Built on Django, this password manager provides users with a seamless platform to securely store passwords, notes, and credit card information, while also facilitating the generation of robust passwords. Additionally, it incorporates advanced features such as two-factor authentication and password reset functionalities to bolster the security of user data.
+Built on Django, this password manager provides users with a seamless platform to securely store passwords, notes, and credit card information, while also facilitating the generation of robust passwords. Additionally, it incorporates advanced features such as two-factor authentication and password reset functionalities to bolster the security of user data. All essential data undergoes encryption via the cryptography module.
+
+<br>
+
+>[!NOTE]
+>Dark Piglock may not offer the same level of security as other password managers. Please use with caution.
+
 
 <br>
 <br>
@@ -32,6 +38,8 @@ Create a clone of this project and execute the following command in the project'
 
 
 ``` git clone https://github.com/Darkshadogt/Dark-Piglock.git ```
+
+
 ``` virtualenv env ```
 
 <br>
@@ -55,16 +63,32 @@ Now you can run the project using the following command:
 <br>
 
 
->Note: Please note that you'll need to create a .env file and insert a new secret key. You can generate a secret key using the following command:
+>[!IMPORTANT]
+>Please note that you'll need to create a .env file and insert a new secret key and an encryption key. You can generate a secret key and an encryption key using the following command:
 
 
 >```
 >from django.core.management.utils import get_random_secret_key
+>from cryptography.fernet import Fernet
+>
 >secret_key = get_random_secret_key()
 >print(secret_key)
+>
+>encryption_key = Fernet.generate_key()
+>print(encryption_key)
 >```
 
 <br>
+
+
+## Features
+
+- Storing Passwords
+- Storing Notes
+- Storing Cards
+- Two Factor Authentication
+- Password Reset
+
 <br>
 
 
@@ -81,3 +105,6 @@ Now you can run the project using the following command:
 - Home Page Illustration Image by [Storyset](https://storyset.com/illustration/secure-login/rafiki)
 - History Page Icon by [Freepik](https://www.freepik.com/icon/no-pork_9958719)
 - Every Other Icons by [Boxicons](https://boxicons.com/)
+
+>[!NOTE]
+>Attributions can also be found within the credits section of the dropdown menu upon logging in.
