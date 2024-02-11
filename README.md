@@ -26,7 +26,7 @@ Built on Django, this password manager provides users with a seamless platform t
 
 ## Deployment
 
-Dark Piglock is currently hosted using Pythonanywhere.
+Dark Piglock is currently hosted using Pythonanywhere, with MySQL serving as the database.
 You can access the link here: [http://darkshadogt.pythonanywhere.com/](http://darkshadogt.pythonanywhere.com/)
 
 
