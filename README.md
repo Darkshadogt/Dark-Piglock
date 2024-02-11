@@ -23,6 +23,13 @@ Built on Django, this password manager provides users with a seamless platform t
 
 
 <br>
+
+## Deployment
+
+Dark Piglock is currently hosted using Pythonanywhere.
+You can access the link here: [http://darkshadogt.pythonanywhere.com/](http://darkshadogt.pythonanywhere.com/)
+
+
 <br>
 
 ## Running this Project
@@ -31,7 +38,7 @@ Built on Django, this password manager provides users with a seamless platform t
 To set up this project, you'll need Python and virtual environment installed.
 
 
-```  pip install virtualenv ```
+``` pip install virtualenv ```
 
 <br>
 Create a clone of this project and execute the following command in the project's root directory.
