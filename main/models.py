@@ -77,11 +77,11 @@ class PasswordModel(models.Model):
 class CardModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     last_modified = models.DateTimeField(auto_now=True)
-    card_number = models.CharField(max_length=16)
+    card_number = models.CharField(max_length=255)
     card_type = models.CharField(max_length=255)
     cardholder_name = models.CharField(max_length=255)
-    expiration_date = models.CharField(max_length=5)
-    cvv = models.CharField(max_length=4)
+    expiration_date = models.CharField(max_length=255)
+    cvv = models.CharField(max_length=255)
     card_brand = models.CharField(max_length=255)
     is_deleted = models.BooleanField(default=False)
 
