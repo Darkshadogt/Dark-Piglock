@@ -20,6 +20,7 @@ Built on Django, this password manager provides users with a seamless platform t
 
 >[!NOTE]
 >Dark Piglock may not offer the same level of security as other password managers. Please use with caution.
+>It is also a static website and may not adjust to different screen sizes. Please be aware of this limitation when accessing the site.
 
 
 <br>
